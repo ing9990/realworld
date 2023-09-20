@@ -1,4 +1,4 @@
-package com.realworldbackend.jwt.service;
+package com.realworldbackend.auth.service;
 
 import com.realworldbackend.common.exception.ErrorCode;
 import com.realworldbackend.common.exception.BusinessException;

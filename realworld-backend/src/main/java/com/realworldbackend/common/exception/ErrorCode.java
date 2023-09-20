@@ -16,11 +16,14 @@ public enum ErrorCode {
     INVALID_REFRESH_TOKEN(401, "A102", "Invalid refresh token."),
     EXPIRED_PERIOD_ACCESS_TOKEN(401, "A103", "Access token has expired."),
     INVALID_ACCESS_TOKEN(401, "A104", "Invalid access token."),
+    FAIL_TO_VALIDATE_TOKEN(401, "A105", "Fail to validate token."),
+    EMAIL_MISMATCH(401, "A106", "Email is not found"),
+    PASSWORD_MISMATCH(401, "A107", "Password mismatch"),
 
     // DEFAULT
     INVALID_INPUT(400, "I001", "Invalid input value."),
     METHOD_NOT_ALLOWED(405, "I002", "Method not allowed."),
-
+    
     INTERNAL_SERVER_ERROR(500, "E500", "Sorry. Something went wrong."),
 
     // RESOURCES_NOT_FOUND

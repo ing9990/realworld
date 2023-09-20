@@ -1,4 +1,4 @@
-package com.realworldbackend.jwt.dto;
+package com.realworldbackend.auth.dto;
 
 import lombok.*;
 

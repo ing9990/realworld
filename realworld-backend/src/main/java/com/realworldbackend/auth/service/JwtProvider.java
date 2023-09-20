@@ -1,6 +1,6 @@
-package com.realworldbackend.jwt.service;
+package com.realworldbackend.auth.service;
 
-import com.realworldbackend.jwt.dto.AccessAndRefreshTokens;
+import com.realworldbackend.auth.dto.AccessAndRefreshTokens;
 import io.jsonwebtoken.*;
 import io.jsonwebtoken.security.Keys;
 import org.springframework.beans.factory.annotation.Value;

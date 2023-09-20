@@ -1,4 +1,4 @@
-package com.realworldbackend.jwt.domain;
+package com.realworldbackend.auth.domain;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -24,4 +24,7 @@ public class RefreshToken {
         this.userId = userId;
     }
 
+    public void updateRefreshToken(String refreshToken) {
+        this.token = refreshToken;
+    }
 }

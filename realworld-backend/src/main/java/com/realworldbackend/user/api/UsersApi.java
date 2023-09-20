@@ -1,7 +1,8 @@
 package com.realworldbackend.user.api;
 
-import com.realworldbackend.jwt.dto.AccessAndRefreshTokens;
-import com.realworldbackend.jwt.service.JwtService;
+import com.realworldbackend.auth.dto.AccessAndRefreshTokens;
+import com.realworldbackend.auth.service.JwtService;
+import com.realworldbackend.user.api.request.UserLoginRequest;
 import com.realworldbackend.user.api.request.UserRegistrationRequest;
 import com.realworldbackend.user.api.response.UserResponse;
 import com.realworldbackend.user.domain.User;
@@ -40,6 +41,27 @@ public class UsersApi {
 
         final User user = userService.getUserByEmail(request.email());
         final AccessAndRefreshTokens accessAndRefreshTokens = jwtService.makeAndGetToken(user.getId());
+        final ResponseCookie cookie = ResponseCookie.from("refresh-token", accessAndRefreshTokens.getRefreshToken())
+                .maxAge(COOKIE_AGE_SECONDS)
+                .sameSite("None")
+                .secure(true)
+                .httpOnly(true)
+                .path("/")
+                .build();
+        httpServletResponse.addHeader(SET_COOKIE, cookie.toString());
+
+        return ResponseEntity.status(HttpStatus.CREATED).body(UserResponse.from(user, accessAndRefreshTokens.getAccessToken()));
+    }
+
+    @PostMapping("/login")
+    public ResponseEntity<UserResponse> login(
+            @Valid @RequestBody UserLoginRequest request,
+            HttpServletResponse httpServletResponse
+    ) {
+        User user = userService.getUserByEmailAndPassword(request.email(), request.password());
+
+        AccessAndRefreshTokens accessAndRefreshTokens = jwtService.makeAndGetToken(user.getId());
+
         final ResponseCookie cookie = ResponseCookie.from("refresh-token", accessAndRefreshTokens.getRefreshToken())
                 .maxAge(COOKIE_AGE_SECONDS)
                 .sameSite("None")
