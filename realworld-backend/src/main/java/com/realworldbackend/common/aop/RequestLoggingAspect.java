@@ -31,7 +31,7 @@ public class RequestLoggingAspect {
     public void onRequest() {
     }
 
-    @Around(value = "com.realworld.common.aop.RequestLoggingAspect.onRequest()")
+    @Around(value = "com.realworldbackend.common.aop.RequestLoggingAspect.onRequest()")
     public Object doLogging(ProceedingJoinPoint pjp) throws Throwable {
         HttpServletRequest request =
                 ((ServletRequestAttributes) RequestContextHolder.currentRequestAttributes()).getRequest();

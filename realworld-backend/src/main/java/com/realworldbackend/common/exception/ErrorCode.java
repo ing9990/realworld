@@ -8,10 +8,14 @@ import lombok.Getter;
 public enum ErrorCode {
 
     // Registration
-    USERNAME_IS_EMPTY(400, "R001", "Username cannot be empty."),
+    DUPLICATED_USERNAME(400, "R002", "Username is already taken."),
+    DUPLICATED_EMAIl(400, "R003", "Email is already taken."),
+    INVALID_EMAIL(400, "R004", "Invalid email format."),
+
 
     // DEFAULT
     INVALID_INPUT(400, "I001", "Invalid input value."),
+
     METHOD_NOT_ALLOWED(405, "I002", "Method not allowed."),
 
     INTERNAL_SERVER_ERROR(500, "E500", "Sorry. Something went wrong.");
@@ -19,7 +23,7 @@ public enum ErrorCode {
 
     private final String code;
     private final String message;
-    private int status;
+    private final int status;
 
     ErrorCode(final int status, final String code, final String message) {
         this.status = status;
