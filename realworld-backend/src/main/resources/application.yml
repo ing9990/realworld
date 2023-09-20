@@ -1,0 +1,13 @@
+server:
+  port: 8080
+
+spring:
+  datasource:
+    url: jdbc:mysql://localhost:3306/realworlddb
+    username: root
+    password:
+
+  jpa:
+    hibernate:
+      ddl-auto: none
+    generate-ddl: true
