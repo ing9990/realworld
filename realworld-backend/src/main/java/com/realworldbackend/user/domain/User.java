@@ -52,7 +52,7 @@ public class User {
 
     }
 
-    public User(Long id, String username, String email, String password) {
+    public User(Long id, final String username, final String email, final String password) {
         checkEmailFormat(email);
         checkUsernameFormat(username);
 
@@ -67,14 +67,15 @@ public class User {
         avatar = new Avatar();
     }
 
-    public static User registration(String username, String email, String password) {
+    public static User registration(final String username, final String email, final String password) {
         return new User(null, username, email, password);
     }
 
-    private void checkUsernameFormat(String username) {
+    private void checkUsernameFormat(final String username) {
+        // TODO document why this method is empty
     }
 
-    private void checkEmailFormat(String email) {
+    private void checkEmailFormat(final String email) {
         if (!EMAIL_REGEX.matcher(email).matches()) {
             throw new InvalidEmailFormatException(ErrorCode.INVALID_EMAIL);
         }
