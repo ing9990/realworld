@@ -21,6 +21,11 @@ public class UserService {
         userRepository.save(User.registration(username, email, password));
     }
 
+    public User getUserByEmail(final String email) {
+        return userRepository.findUserByEmail(email)
+                .orElseThrow(() -> new UserNotFoundException(ErrorCode.NOT_FOUND_USER));
+    }
+
     private void validateUsernmaeDuplicate(final String username) {
         if (userRepository.existsByUsername(username)) {
             throw new UsernameDuplicatedException(ErrorCode.DUPLICATED_USERNAME);
@@ -29,7 +34,7 @@ public class UserService {
 
     private void validateEmailDuplicate(final String email) {
         if (userRepository.existsByEmail(email)) {
-            throw new UsernameDuplicatedException(ErrorCode.DUPLICATED_EMAIl);
+            throw new UsernameDuplicatedException(ErrorCode.DUPLICATED_EMAIL);
         }
     }
 }

@@ -46,16 +46,15 @@ public class ErrorResponse {
         }
 
         private static List<FieldError> of(final BindingResult result) {
-            return result
-                    .getAllErrors().stream().map(error -> {
-                        var field = (org.springframework.validation.FieldError) error;
+            return result.getAllErrors().stream().map(error -> {
+                var field = (org.springframework.validation.FieldError) error;
 
-                        return FieldError.builder()
-                                .field(field.getField())
-                                .reason(field.getDefaultMessage())
-                                .value(field.getRejectedValue() == null ? "" : field.getRejectedValue().toString())
-                                .build();
-                    }).collect(Collectors.toList());
+                return FieldError.builder()
+                        .field(field.getField())
+                        .reason(field.getDefaultMessage())
+                        .value(field.getRejectedValue() == null ? "" : field.getRejectedValue().toString())
+                        .build();
+            }).collect(Collectors.toList());
         }
     }
 

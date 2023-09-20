@@ -2,6 +2,7 @@ package com.realworldbackend.user.domain;
 
 import com.realworldbackend.common.exception.ErrorCode;
 import jakarta.persistence.*;
+import lombok.Getter;
 import org.hibernate.annotations.SQLDelete;
 import org.hibernate.annotations.Where;
 import org.springframework.data.annotation.CreatedDate;
@@ -12,8 +13,9 @@ import java.util.regex.Pattern;
 
 @Entity
 @Table(name = "user")
-@Where(clause = "user_status = ACTIVE")
+@Where(clause = "user_status = 'ACTIVE'")
 @SQLDelete(sql = "UPDATE user SET user_status = 'DELETED' WHERE id = ?")
+@Getter
 public class User {
 
     private static final Pattern EMAIL_REGEX = Pattern.compile("^[a-zA-Z0-9_+&*-]+(?:\\.[a-zA-Z0-9_+&*-]+)*@(?:[a-zA-Z0-9-]+\\.)+[a-zA-Z]{2,7}$");
@@ -64,7 +66,7 @@ public class User {
         this.createdAt = LocalDateTime.now();
         this.modifiedAt = LocalDateTime.now();
 
-        avatar = new Avatar();
+        this.avatar = new Avatar();
     }
 
     public static User registration(final String username, final String email, final String password) {

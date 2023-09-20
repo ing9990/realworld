@@ -12,3 +12,10 @@ spring:
       ddl-auto: create-drop
     generate-ddl: true
     show-sql: true
+    open-in-view: false
+
+security:
+  jwt:
+    secret-key: UmVhbHdvcmxkLUFwcGxpY2F0aW9uLVNwcmluZ2Jvb3Q=
+    access-expiration-time: 3_600_000_000
+    refresh-expiration-time: 2_592_000_000_000

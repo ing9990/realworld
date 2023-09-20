@@ -1,10 +1,10 @@
-package com.realworldbackend.user.domain;
+package com.realworldbackend.user.domain.service;
 
 import com.realworldbackend.common.exception.ErrorCode;
 import com.realworldbackend.common.exception.BusinessException;
 
-public class InvalidEmailFormatException extends RuntimeException {
-    public InvalidEmailFormatException(ErrorCode errorCode) {
+public class UserNotFoundException extends RuntimeException {
+    public UserNotFoundException(ErrorCode errorCode) {
         throw new BusinessException(errorCode);
     }
 }

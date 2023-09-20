@@ -2,12 +2,9 @@ package com.realworldbackend.common.aop;
 
 import com.google.common.base.Joiner;
 import jakarta.servlet.http.HttpServletRequest;
-import jakarta.servlet.http.HttpServletResponse;
 import lombok.extern.slf4j.Slf4j;
 import org.aspectj.lang.ProceedingJoinPoint;
-import org.aspectj.lang.annotation.Around;
-import org.aspectj.lang.annotation.Aspect;
-import org.aspectj.lang.annotation.Pointcut;
+import org.aspectj.lang.annotation.*;
 import org.springframework.stereotype.Component;
 import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
@@ -27,19 +24,16 @@ public class RequestLoggingAspect {
                 .collect(Collectors.joining(", "));
     }
 
-    @Pointcut("execution(* *..*Api.*(..))")
-    public void onRequest() {
-    }
+    @Pointcut("within(*..*Api)")
+    public void apiRequest() {}
 
-    @Around(value = "com.realworldbackend.common.aop.RequestLoggingAspect.onRequest()")
+    @Around(value = "com.realworldbackend.common.aop.RequestLoggingAspect.apiRequest()")
     public Object doLogging(ProceedingJoinPoint pjp) throws Throwable {
         HttpServletRequest request =
                 ((ServletRequestAttributes) RequestContextHolder.currentRequestAttributes()).getRequest();
 
-        HttpServletResponse response =
-                ((ServletRequestAttributes) RequestContextHolder.currentRequestAttributes()).getResponse();
-
         Map<String, String[]> paramMap = request.getParameterMap();
+
         String params = "";
 
         if (!paramMap.isEmpty()) {
@@ -48,15 +42,13 @@ public class RequestLoggingAspect {
 
         long start = System.currentTimeMillis();
 
-        try {
-            return pjp.proceed(pjp.getArgs());
-        } catch (Exception e) {
-            return pjp.proceed(pjp.getArgs());
-        } finally {
-            long end = System.currentTimeMillis();
-            log.info("Request: {} {} {} < ({}ms)",
-                    request.getMethod(), request.getRequestURI(), params, end - start);
+        Object result = pjp.proceed();
 
-        }
+        long end = System.currentTimeMillis();
+
+        log.info("Request: {} {} {} < ({}ms)",
+                request.getMethod(), request.getRequestURI(), params, end - start);
+
+        return result;
     }
 }

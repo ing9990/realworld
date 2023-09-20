@@ -1,15 +1,19 @@
 package com.realworldbackend.user.domain;
 
 import com.realworldbackend.common.exception.ErrorCode;
-import com.realworldbackend.common.exception.SystemException;
+import com.realworldbackend.common.exception.BusinessException;
 import jakarta.persistence.Column;
 import jakarta.persistence.Embeddable;
+import lombok.Getter;
+
+import java.util.Objects;
 
 @Embeddable
+@Getter
 public class Avatar {
 
     protected static final String DEFAULT_BIO = "";
-    protected static final String DEFAULT_IMAGE = "null";
+    protected static final String DEFAULT_IMAGE = "";
 
     @Column(name = "user_avatar_bio")
     private String bio;
@@ -18,19 +22,13 @@ public class Avatar {
     private String image;
 
     protected Avatar() {
-        new Avatar(DEFAULT_BIO, DEFAULT_IMAGE);
-    }
-
-    protected Avatar(String bio, String image) {
-        checkBioAndImageIsNotEmpty(bio, image);
-
-        this.bio = bio;
-        this.image = image;
+        this.bio = DEFAULT_BIO;
+        this.image = DEFAULT_IMAGE;
     }
 
     public void updateProfile(final String bio, final String image) {
         checkBioAndImageIsNotEmpty(bio, image);
-        
+
         this.bio = bio;
         this.image = image;
     }
@@ -39,8 +37,8 @@ public class Avatar {
             final String bio,
             final String image
     ) {
-        if (bio.isEmpty() || image.isEmpty()) {
-            throw new SystemException("User bio and user image cannot be empty. ", ErrorCode.INVALID_INPUT);
+        if (Objects.isNull(bio) || Objects.isNull(image)) {
+            throw new BusinessException("User bio and user image cannot be empty. ", ErrorCode.INVALID_INPUT);
         }
     }
 }

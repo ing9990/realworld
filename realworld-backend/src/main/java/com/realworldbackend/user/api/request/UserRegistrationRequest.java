@@ -1,8 +1,11 @@
 package com.realworldbackend.user.api.request;
 
+import com.fasterxml.jackson.annotation.JsonTypeInfo;
+import com.fasterxml.jackson.annotation.JsonTypeName;
 import jakarta.validation.constraints.NotEmpty;
-import lombok.Getter;
 
+@JsonTypeName("user")
+@JsonTypeInfo(include = JsonTypeInfo.As.WRAPPER_OBJECT, use = JsonTypeInfo.Id.NAME)
 public record UserRegistrationRequest(
 
         @NotEmpty(message = "Username cannot be empty.")
