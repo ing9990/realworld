@@ -25,7 +25,8 @@ public class RequestLoggingAspect {
     }
 
     @Pointcut("within(*..*Api)")
-    public void apiRequest() {}
+    public void apiRequest() {
+    }
 
     @Around(value = "com.realworldbackend.common.aop.RequestLoggingAspect.apiRequest()")
     public Object doLogging(ProceedingJoinPoint pjp) throws Throwable {
@@ -41,13 +42,10 @@ public class RequestLoggingAspect {
         }
 
         long start = System.currentTimeMillis();
-
         Object result = pjp.proceed();
-
         long end = System.currentTimeMillis();
 
-        log.info("Request: {} {} {} < ({}ms)",
-                request.getMethod(), request.getRequestURI(), params, end - start);
+        log.info("Request: {} {} {} < ({}ms)", request.getMethod(), request.getRequestURI(), params, end - start);
 
         return result;
     }
