@@ -3,6 +3,7 @@ package com.realworldbackend.user.api;
 import com.realworldbackend.auth.dto.AccessAndRefreshTokens;
 import com.realworldbackend.auth.service.JwtService;
 import com.realworldbackend.common.annotations.CurrentUser;
+import com.realworldbackend.common.resolvers.CurrentUserDto;
 import com.realworldbackend.user.api.request.UserUpdateRequest;
 import com.realworldbackend.user.api.response.UserResponse;
 import com.realworldbackend.user.domain.User;
@@ -26,21 +27,22 @@ public class UserApi {
 
     @GetMapping
     public ResponseEntity<?> currentUser(
-            @CurrentUser Long userId
+            @CurrentUser CurrentUserDto currentUserDto
     ) {
         return ResponseEntity.status(HttpStatus.OK)
-                .body(UserResponse.from(userService.getUserByUserId(userId), ""));
+                .body(UserResponse.from(userService.getUserByUserId(
+                        currentUserDto.userId()), ""));
     }
 
     @PutMapping
     public ResponseEntity<?> updateUser(
-            @CurrentUser Long userId,
+            @CurrentUser CurrentUserDto currentUserDto,
             @Valid @RequestBody UserUpdateRequest request
     ) {
-        userService.updateUser(userId, request);
+        userService.updateUser(currentUserDto.userId(), request);
 
         return ResponseEntity.status(HttpStatus.OK)
-                .body(UserResponse.from(userService.getUserByUserId(userId), ""));
+                .body(UserResponse.from(userService.getUserByUserId(currentUserDto.userId()), ""));
 
     }
 }

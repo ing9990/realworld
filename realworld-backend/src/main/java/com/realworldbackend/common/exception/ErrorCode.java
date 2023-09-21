@@ -10,7 +10,6 @@ public enum ErrorCode {
     DUPLICATED_EMAIL(400, "R003", "Email is already taken."),
     INVALID_EMAIL(400, "R004", "Invalid email format."),
 
-
     // AUTH
     EXPIRED_PERIOD_REFRESH_TOKEN(401, "A101", "Refresh token has expired."),
     INVALID_REFRESH_TOKEN(401, "A102", "Invalid refresh token."),
@@ -23,11 +22,12 @@ public enum ErrorCode {
     // DEFAULT
     INVALID_INPUT(400, "I001", "Invalid input value."),
     METHOD_NOT_ALLOWED(405, "I002", "Method not allowed."),
-    
+
     INTERNAL_SERVER_ERROR(500, "E500", "Sorry. Something went wrong."),
 
     // RESOURCES_NOT_FOUND
-    NOT_FOUND_USER(404, "N001", "User not found.");
+    NOT_FOUND_USER(404, "N001", "User not found."),
+    NOT_FOUND_USER_FOLLOW(404, "N002", "Cannot find the user to follow.");
 
     private int status;
     private final String code;

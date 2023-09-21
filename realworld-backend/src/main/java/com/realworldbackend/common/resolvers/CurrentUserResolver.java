@@ -14,6 +14,8 @@ import org.springframework.web.context.request.NativeWebRequest;
 import org.springframework.web.method.support.HandlerMethodArgumentResolver;
 import org.springframework.web.method.support.ModelAndViewContainer;
 
+import java.util.Objects;
+
 @Component
 @RequiredArgsConstructor
 @Slf4j
@@ -27,19 +29,32 @@ public class CurrentUserResolver implements HandlerMethodArgumentResolver {
     }
 
     @Override
-    public Object resolveArgument(MethodParameter parameter,
-                                  ModelAndViewContainer mavContainer,
-                                  NativeWebRequest webRequest,
-                                  WebDataBinderFactory binderFactory) {
+    public Object resolveArgument(
+            MethodParameter parameter,
+            ModelAndViewContainer mavContainer,
+            NativeWebRequest webRequest,
+            WebDataBinderFactory binderFactory
+    ) {
         try {
             String authorizationToken = webRequest.getHeader(HttpHeaders.AUTHORIZATION);
+
+            if (authorizationToken == null) {
+                // 헤더에 Authorization 토큰이 없는 경우
+                if (Objects.requireNonNull(parameter.getParameterAnnotation(CurrentUser.class))
+                        .required()) {
+                    throw new AuthException(ErrorCode.INVALID_ACCESS_TOKEN);
+                } else {
+                    return new CurrentUserDto(-1L, LoginType.LOGIN_NONE);
+                }
+            }
 
             if (!authorizationToken.startsWith("Token")) {
                 throw new AuthException(ErrorCode.INVALID_ACCESS_TOKEN);
             }
             String rawToken = authorizationToken.substring(6);
             String userId = jwtProvider.getSubject(rawToken).trim();
-            return Long.parseLong(userId);
+
+            return new CurrentUserDto(Long.parseLong(userId), LoginType.LOGIN);
         } catch (IllegalArgumentException e) {
             throw new AuthException(ErrorCode.INVALID_ACCESS_TOKEN);
         }
