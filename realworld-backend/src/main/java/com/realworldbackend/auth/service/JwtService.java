@@ -31,9 +31,7 @@ public class JwtService {
         return tokens;
     }
 
-    public String renewalAccessToken(final String refreshTokenRequest, final String authorizationHeader) {
-        final String accessToken = authorizationHeader.substring(7);
-
+    public String renewalAccessToken(final String refreshTokenRequest, final String accessToken) {
         if (jwtProvider.isValidRefreshAndInvalidAccess(refreshTokenRequest, accessToken)) {
             final RefreshToken refreshToken = refreshTokenRepository.findRefreshTokenByToken(refreshTokenRequest)
                     .orElseThrow(() -> new AuthException(INVALID_REFRESH_TOKEN));
@@ -41,5 +39,15 @@ public class JwtService {
             return jwtProvider.regenerateAccessToken(refreshToken.getUserId().toString());
         }
         throw new AuthException(ErrorCode.FAIL_TO_VALIDATE_TOKEN);
+    }
+
+    public String getRefreshTokenByUserId(Long id) {
+        Optional<RefreshToken> tokens = refreshTokenRepository.findRefreshTokenByUserId(id);
+
+        if (tokens.isEmpty()) {
+            return tokens.get().getToken();
+        }
+
+        throw new AuthException(ErrorCode.INVALID_ACCESS_TOKEN);
     }
 }

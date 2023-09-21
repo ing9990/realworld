@@ -1,6 +1,8 @@
 package com.realworldbackend.user.domain.service;
 
+import com.realworldbackend.common.exception.BusinessException;
 import com.realworldbackend.common.exception.ErrorCode;
+import com.realworldbackend.user.api.request.UserUpdateRequest;
 import com.realworldbackend.user.domain.User;
 import com.realworldbackend.user.domain.UserRepository;
 import jakarta.transaction.Transactional;
@@ -28,17 +30,6 @@ public class UserService {
                 .orElseThrow(() -> new UserNotFoundException(ErrorCode.NOT_FOUND_USER));
     }
 
-    private void validateUsernmaeDuplicate(final String username) {
-        if (userRepository.existsByUsername(username)) {
-            throw new UsernameDuplicatedException(ErrorCode.DUPLICATED_USERNAME);
-        }
-    }
-
-    private void validateEmailDuplicate(final String email) {
-        if (userRepository.existsByEmail(email)) {
-            throw new UsernameDuplicatedException(ErrorCode.DUPLICATED_EMAIL);
-        }
-    }
 
     public User getUserByEmailAndPassword(String email, String password) {
         User user = userRepository.findUserByEmail(email)
@@ -49,5 +40,41 @@ public class UserService {
         }
 
         throw new PasswordMisMatchException(ErrorCode.PASSWORD_MISMATCH);
+    }
+
+    public User getUserByUserId(Long userId) {
+        return userRepository.findUserByUserId(userId)
+                .orElseThrow(UserNotFoundException::new);
+    }
+
+    public void updateUser(Long userId, UserUpdateRequest request) {
+        User user = userRepository.findUserByUserId(userId)
+                .orElseThrow(UserNotFoundException::new);
+
+
+        if (request != null) {
+            user.update(
+                    request.email(),
+                    request.username(),
+                    request.password() == null ? "" : encoder.encode(request.password()),
+                    request.bio(),
+                    request.image()
+            );
+            return;
+        }
+
+        throw new BusinessException(ErrorCode.INVALID_INPUT);
+    }
+
+    private void validateUsernmaeDuplicate(final String username) {
+        if (userRepository.existsByUsername(username)) {
+            throw new UsernameDuplicatedException(ErrorCode.DUPLICATED_USERNAME);
+        }
+    }
+
+    private void validateEmailDuplicate(final String email) {
+        if (userRepository.existsByEmail(email)) {
+            throw new UsernameDuplicatedException(ErrorCode.DUPLICATED_EMAIL);
+        }
     }
 }

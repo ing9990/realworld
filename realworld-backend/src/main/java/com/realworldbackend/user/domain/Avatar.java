@@ -27,10 +27,8 @@ public class Avatar {
     }
 
     public void updateProfile(final String bio, final String image) {
-        checkBioAndImageIsNotEmpty(bio, image);
-
-        this.bio = bio;
-        this.image = image;
+        this.bio = bio == null ? "" : bio;
+        this.image = image == null ? "" : image;
     }
 
     private void checkBioAndImageIsNotEmpty(
@@ -40,5 +38,13 @@ public class Avatar {
         if (Objects.isNull(bio) || Objects.isNull(image)) {
             throw new BusinessException("User bio and user image cannot be empty. ", ErrorCode.INVALID_INPUT);
         }
+    }
+
+    public void updateImage(String image) {
+        this.image = image;
+    }
+
+    public void updateBio(String bio) {
+        this.bio = bio;
     }
 }

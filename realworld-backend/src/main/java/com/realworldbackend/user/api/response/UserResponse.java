@@ -16,6 +16,16 @@ public record UserResponse(String email, String token, String username, String b
         );
     }
 
+    public static UserResponse from(final User user) {
+        return new UserResponse(
+                user.getEmail(),
+                "",
+                user.getUsername(),
+                user.getAvatar().getBio(),
+                user.getAvatar().getImage()
+        );
+    }
+
     public UserResponse(String email, String token, String username, String bio, String image) {
         this.email = email;
         this.token = token;

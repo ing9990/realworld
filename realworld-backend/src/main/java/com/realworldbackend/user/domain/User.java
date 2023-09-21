@@ -83,7 +83,13 @@ public class User {
         }
     }
 
-    public boolean isActiveUser() {
-        return this.userStatus == UserStatus.ACTIVE;
+    public void update(final String email, final String username, final String password, final String bio, final String image) {
+        this.email = email == null ? this.email : email;
+        this.username = username == null ? this.username : username;
+        this.password = "".equals(password) || password == null ? this.password : password;
+        if (this.avatar == null) {
+            this.avatar = new Avatar();
+        }
+        this.avatar.updateProfile(bio, image);
     }
 }
