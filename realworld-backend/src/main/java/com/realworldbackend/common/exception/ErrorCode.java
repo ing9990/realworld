@@ -27,7 +27,11 @@ public enum ErrorCode {
 
     // RESOURCES_NOT_FOUND
     NOT_FOUND_USER(404, "N001", "User not found."),
-    NOT_FOUND_USER_FOLLOW(404, "N002", "Cannot find the user to follow.");
+    NOT_FOUND_USER_FOLLOW(404, "N002", "Cannot find the user to follow."),
+
+    NOT_SUPPORTED_OAUTH_SERVICE(401, "O001", "OAuth services isn't supported"),
+
+    ARTICLE_NOT_FOUND(404, "ANF001", "Article not found.");
 
     private int status;
     private final String code;
