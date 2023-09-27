@@ -40,14 +40,4 @@ public class JwtService {
         }
         throw new AuthException(ErrorCode.FAIL_TO_VALIDATE_TOKEN);
     }
-
-    public String getRefreshTokenByUserId(Long id) {
-        Optional<RefreshToken> tokens = refreshTokenRepository.findRefreshTokenByUserId(id);
-
-        if (tokens.isEmpty()) {
-            return tokens.get().getToken();
-        }
-
-        throw new AuthException(ErrorCode.INVALID_ACCESS_TOKEN);
-    }
 }

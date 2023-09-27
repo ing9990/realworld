@@ -1,6 +1,7 @@
 package com.realworldbackend.article.domain.service;
 
-import com.realworldbackend.article.api.response.SingleArticleResponse;
+import com.realworldbackend.article.domain.ArticleVO;
+import com.realworldbackend.article.api.dto.response.SingleArticleResponse;
 import com.realworldbackend.article.domain.Article;
 import com.realworldbackend.article.domain.ArticleNotFoundException;
 import com.realworldbackend.article.domain.ArticleRepository;
@@ -17,13 +18,10 @@ import java.util.List;
 @RequiredArgsConstructor
 public class ArticleService {
 
-    private final UserRepository userRepository;
     private final ArticleRepository articleRepository;
 
     @Transactional
-    public Long makeArticle(Long authorId, String title, String description, String body, List<String> tags) {
-        User author = userRepository.findUserByUserId(authorId).orElseThrow(UserNotFoundException::new);
-
+    public Long makeArticle(User author, String title, String description, String body, List<String> tags) {
         Article article = articleRepository.save(Article.makeArticle(title, description, body, author, tags));
 
         return article.getId();
@@ -31,10 +29,8 @@ public class ArticleService {
 
     @Transactional(readOnly = true)
     public SingleArticleResponse getArticle(Long articleId) {
-        Article article = articleRepository.findById(articleId)
-                .orElseThrow(ArticleNotFoundException::new);
+        Article article = articleRepository.findArticleById(articleId);
 
-
-        return null;
+        return SingleArticleResponse.from(article);
     }
 }

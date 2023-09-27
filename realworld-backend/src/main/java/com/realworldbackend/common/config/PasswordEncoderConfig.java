@@ -1,4 +1,4 @@
-package com.realworldbackend.common.security;
+package com.realworldbackend.common.config;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;

@@ -1,4 +1,4 @@
-package com.realworldbackend.article.api.request;
+package com.realworldbackend.article.api.dto.request;
 
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
@@ -6,7 +6,7 @@ import jakarta.validation.constraints.NotEmpty;
 
 import java.util.List;
 
-@JsonTypeName("user")
+@JsonTypeName("article")
 @JsonTypeInfo(include = JsonTypeInfo.As.WRAPPER_OBJECT, use = JsonTypeInfo.Id.NAME)
 public record CreateArticleRequest(
 

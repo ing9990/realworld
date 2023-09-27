@@ -1,4 +1,4 @@
-package com.realworldbackend.article.api.response;
+package com.realworldbackend.article.api.dto.response;
 
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
@@ -9,7 +9,7 @@ import lombok.Builder;
 import java.time.LocalDateTime;
 import java.util.Set;
 
-@JsonTypeName("user")
+@JsonTypeName("article")
 @JsonTypeInfo(include = JsonTypeInfo.As.WRAPPER_OBJECT, use = JsonTypeInfo.Id.NAME)
 @Builder
 public record SingleArticleResponse(
@@ -30,18 +30,22 @@ public record SingleArticleResponse(
             String image,
             boolean following
     ) {
-
-        public static SingleArticleAuthorResponse from(User currentUser, User user) {
+        public static SingleArticleAuthorResponse from(
+                final User currentUser
+        ) {
             return new SingleArticleAuthorResponse(
                     currentUser.getUsername(),
                     currentUser.getAvatar().getBio(),
                     currentUser.getAvatar().getImage(),
-                    currentUser.isFollow(user)
+                    false
             );
         }
     }
 
-    public static SingleArticleResponse from(Article article, User currentUser) {
+    public static SingleArticleResponse from(
+            final Article article
+
+    ) {
         return SingleArticleResponse.builder()
                 .title(article.getTitle())
                 .slug(article.getSlug())
@@ -50,9 +54,9 @@ public record SingleArticleResponse(
                 .tagList(article.getTagList())
                 .createdAt(article.getCreatedAt())
                 .updatedAt(article.getUpdatedAt())
-                .favorited(article.isFavorited(currentUser))
-                .favoritesCount(article.getFavoritesUser().size())
-                .author(SingleArticleAuthorResponse.from(article.getAuthor(), currentUser))
+                .favorited(false)
+                .favoritesCount(article.getFavoritesUsers().size())
+                .author(SingleArticleAuthorResponse.from(article.getAuthor()))
                 .build();
     }
 }

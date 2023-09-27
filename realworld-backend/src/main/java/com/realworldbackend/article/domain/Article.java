@@ -4,11 +4,18 @@ import com.realworldbackend.common.model.BaseEntity;
 import com.realworldbackend.user.domain.User;
 import jakarta.persistence.*;
 import lombok.Getter;
+import org.hibernate.annotations.DynamicInsert;
+import org.hibernate.annotations.DynamicUpdate;
 
 import java.util.*;
 
+@NamedEntityGraph(name = "with_tagList", attributeNodes = {
+        @NamedAttributeNode("tagList")
+})
 @Getter
 @Entity
+@DynamicInsert
+@DynamicUpdate
 public class Article extends BaseEntity {
 
     @Id
@@ -27,7 +34,7 @@ public class Article extends BaseEntity {
     @Column(name = "article_body")
     private String body;
 
-    @OneToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "author_id")
     private User author;
 
@@ -36,7 +43,7 @@ public class Article extends BaseEntity {
     private Set<String> tagList = new HashSet<>();
 
     @OneToMany
-    private Set<User> favoritesUser = new HashSet<>();
+    private Set<User> favoritesUsers = new HashSet<>();
 
     protected Article(
             Long id,
@@ -45,7 +52,7 @@ public class Article extends BaseEntity {
             String description,
             String body, User author,
             Collection<String> tagList,
-            Collection<User> favoritesUser
+            Collection<User> favoritesUsers
     ) {
         this.id = id;
         this.title = title;
@@ -54,14 +61,14 @@ public class Article extends BaseEntity {
         this.body = body;
         this.author = author;
         this.tagList = new HashSet<>(tagList);
-        this.favoritesUser = new HashSet<>(favoritesUser);
+        this.favoritesUsers = new HashSet<>(favoritesUsers);
     }
 
     protected Article() {
     }
 
     public boolean isFavorited(final User currentUser) {
-        return favoritesUser.contains(currentUser);
+        return favoritesUsers.contains(currentUser);
     }
 
     public static Article makeArticle(
@@ -89,7 +96,7 @@ public class Article extends BaseEntity {
                 .forEach(word ->
                         slugBuilder.append(word).append("-"));
 
-        return slugBuilder.substring(0, slugBuilder.length() - 2);
+        return slugBuilder.substring(0, slugBuilder.length() - 1);
     }
 
 }

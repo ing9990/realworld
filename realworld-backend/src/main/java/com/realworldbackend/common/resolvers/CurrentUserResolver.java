@@ -39,8 +39,8 @@ public class CurrentUserResolver implements HandlerMethodArgumentResolver {
             String authorizationToken = webRequest.getHeader(HttpHeaders.AUTHORIZATION);
 
             if (authorizationToken == null) {
-                // 헤더에 Authorization 토큰이 없는 경우
-                if (Objects.requireNonNull(parameter.getParameterAnnotation(CurrentUser.class))
+                if (Objects.requireNonNull(parameter
+                                .getParameterAnnotation(CurrentUser.class))
                         .required()) {
                     throw new AuthException(ErrorCode.INVALID_ACCESS_TOKEN);
                 } else {
@@ -48,9 +48,10 @@ public class CurrentUserResolver implements HandlerMethodArgumentResolver {
                 }
             }
 
-            if (!authorizationToken.startsWith("Token")) {
+            if (!authorizationToken.startsWith("Token ")) {
                 throw new AuthException(ErrorCode.INVALID_ACCESS_TOKEN);
             }
+
             String rawToken = authorizationToken.substring(6);
             String userId = jwtProvider.getSubject(rawToken).trim();
 

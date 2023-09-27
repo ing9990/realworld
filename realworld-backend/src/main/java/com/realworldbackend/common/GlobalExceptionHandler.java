@@ -1,5 +1,6 @@
 package com.realworldbackend.common;
 
+import com.realworldbackend.auth.service.AuthException;
 import com.realworldbackend.common.exception.ErrorCode;
 import com.realworldbackend.common.exception.BusinessException;
 import com.realworldbackend.common.exception.dto.ErrorResponse;
@@ -46,6 +47,16 @@ public class GlobalExceptionHandler {
     @ExceptionHandler(BusinessException.class)
     protected ResponseEntity<ErrorResponse> handleBusinessException(final BusinessException e) {
         log.error("handleEntityNotFoundException" + e);
+
+        final ErrorCode errorCode = e.getErrorCode();
+        final ErrorResponse response = ErrorResponse.of(errorCode);
+
+        return new ResponseEntity<>(response, HttpStatus.valueOf(errorCode.getStatus()));
+    }
+
+    @ExceptionHandler(AuthException.class)
+    protected ResponseEntity<ErrorResponse> handleAuthException(final AuthException e) {
+        log.error(e.getClass().getSimpleName() + "\n" + e);
 
         final ErrorCode errorCode = e.getErrorCode();
         final ErrorResponse response = ErrorResponse.of(errorCode);

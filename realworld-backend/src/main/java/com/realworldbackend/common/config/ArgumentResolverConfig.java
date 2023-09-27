@@ -1,4 +1,4 @@
-package com.realworldbackend.common.security;
+package com.realworldbackend.common.config;
 
 import com.realworldbackend.common.resolvers.CurrentUserResolver;
 import lombok.RequiredArgsConstructor;

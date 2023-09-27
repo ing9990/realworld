@@ -6,27 +6,28 @@ import jakarta.persistence.Enumerated;
 import jakarta.persistence.MappedSuperclass;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import org.springframework.data.annotation.CreatedDate;
-import org.springframework.data.annotation.LastModifiedDate;
+import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.UpdateTimestamp;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import java.time.LocalDateTime;
+import java.time.ZoneOffset;
 
 import static jakarta.persistence.EnumType.STRING;
 
+@NoArgsConstructor
 @Getter
 @MappedSuperclass
-@NoArgsConstructor
 @EntityListeners(AuditingEntityListener.class)
 public abstract class BaseEntity {
 
-    @CreatedDate
-    @Column(nullable = false, updatable = false)
-    private LocalDateTime createdAt;
+    @CreationTimestamp
+    @Column(name = "created_at", nullable = false, updatable = false)
+    private LocalDateTime createdAt = LocalDateTime.now();
 
-    @LastModifiedDate
-    @Column(nullable = false)
-    private LocalDateTime updatedAt;
+    @UpdateTimestamp
+    @Column(name = "modified_at", nullable = false)
+    private LocalDateTime updatedAt = LocalDateTime.now();
 
     @Column(nullable = false)
     @Enumerated(value = STRING)
@@ -42,5 +43,15 @@ public abstract class BaseEntity {
 
     public void changeStatusToDeleted() {
         this.status = StatusType.DELETED;
+    }
+
+    public LocalDateTime getCreatedAt() {
+        return this.createdAt.atOffset(ZoneOffset.UTC)
+                .toLocalDateTime();
+    }
+
+    public LocalDateTime getUpdatedAt() {
+        return this.updatedAt.atOffset(ZoneOffset.UTC)
+                .toLocalDateTime();
     }
 }

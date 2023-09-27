@@ -21,24 +21,21 @@ public class UserApi {
     private final JwtService jwtService;
 
     @GetMapping
-    public ResponseEntity<?> currentUser(
+    public ResponseEntity<UserResponse> currentUser(
             @CurrentUser CurrentUserDto currentUserDto
     ) {
         return ResponseEntity.status(HttpStatus.OK)
-                .body(UserResponse.from(userService.getUserByUserId(currentUserDto.userId()),
-                        jwtService.getRefreshTokenByUserId(currentUserDto.userId())));
+                .body(UserResponse.from(userService.getUserByUserId(currentUserDto.userId()), ""));
     }
 
     @PutMapping
-    public ResponseEntity<?> updateUser(
+    public ResponseEntity<UserResponse> updateUser(
             @CurrentUser CurrentUserDto currentUserDto,
             @Valid @RequestBody UserUpdateRequest request
     ) {
         userService.updateUser(currentUserDto.userId(), request);
 
         return ResponseEntity.status(HttpStatus.OK)
-                .body(UserResponse.from(userService.getUserByUserId(currentUserDto.userId()),
-                        jwtService.getRefreshTokenByUserId(currentUserDto.userId())
-                ));
+                .body(UserResponse.from(userService.getUserByUserId(currentUserDto.userId()), ""));
     }
 }

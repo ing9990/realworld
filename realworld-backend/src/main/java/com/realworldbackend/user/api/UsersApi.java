@@ -71,6 +71,6 @@ public class UsersApi {
                 .build();
         httpServletResponse.addHeader(SET_COOKIE, cookie.toString());
 
-        return ResponseEntity.status(HttpStatus.CREATED).body(UserResponse.from(user, accessAndRefreshTokens.getAccessToken()));
+        return ResponseEntity.status(HttpStatus.OK).body(UserResponse.from(user, accessAndRefreshTokens.getAccessToken()));
     }
 }
