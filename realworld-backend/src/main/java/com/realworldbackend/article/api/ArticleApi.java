@@ -35,9 +35,8 @@ public class ArticleApi {
                 createArticleRequest.tagList()
         );
 
-//        Article article = articleService.getArticle(articleId);
+        SingleArticleResponse article = articleService.getArticle(articleId);
 
-        return ResponseEntity.status(HttpStatus.CREATED).body(SingleArticleResponse.from(null));
+        return ResponseEntity.status(HttpStatus.CREATED).body(article);
     }
-
 }

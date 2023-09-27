@@ -3,6 +3,7 @@ package com.realworldbackend.article.api.response;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 import com.realworldbackend.article.domain.Article;
+import com.realworldbackend.user.domain.User;
 import lombok.Builder;
 
 import java.time.LocalDateTime;
@@ -21,9 +22,26 @@ public record SingleArticleResponse(
         LocalDateTime updatedAt,
         boolean favorited,
         int favoritesCount,
-        AuthorResponse author
+        SingleArticleAuthorResponse author
 ) {
-    public static SingleArticleResponse from(Article article) {
+    record SingleArticleAuthorResponse(
+            String username,
+            String bio,
+            String image,
+            boolean following
+    ) {
+
+        public static SingleArticleAuthorResponse from(User currentUser, User user) {
+            return new SingleArticleAuthorResponse(
+                    currentUser.getUsername(),
+                    currentUser.getAvatar().getBio(),
+                    currentUser.getAvatar().getImage(),
+                    currentUser.getFollowers().isFollow(user)
+            );
+        }
+    }
+
+    public static SingleArticleResponse from(Article article, User currentUser) {
         return SingleArticleResponse.builder()
                 .title(article.getTitle())
                 .slug(article.getSlug())
@@ -32,9 +50,9 @@ public record SingleArticleResponse(
                 .tagList(article.getTagList())
                 .createdAt(article.getCreatedAt())
                 .updatedAt(article.getUpdatedAt())
-                .favorited(false)
+                .favorited(article.isFavorited(currentUser))
                 .favoritesCount(article.getFavoritesUser().size())
-//                .author(AuthorResponse.from(article.getAuthor()))
+                .author(SingleArticleAuthorResponse.from(article.getAuthor(), currentUser))
                 .build();
     }
 }

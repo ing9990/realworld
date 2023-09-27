@@ -7,20 +7,20 @@ import com.realworldbackend.article.domain.ArticleRepository;
 import com.realworldbackend.user.domain.User;
 import com.realworldbackend.user.domain.UserRepository;
 import com.realworldbackend.user.domain.service.UserNotFoundException;
-import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
 @Service
 @RequiredArgsConstructor
-@Transactional
 public class ArticleService {
 
     private final UserRepository userRepository;
     private final ArticleRepository articleRepository;
 
+    @Transactional
     public Long makeArticle(Long authorId, String title, String description, String body, List<String> tags) {
         User author = userRepository.findUserByUserId(authorId).orElseThrow(UserNotFoundException::new);
 
@@ -29,10 +29,10 @@ public class ArticleService {
         return article.getId();
     }
 
+    @Transactional(readOnly = true)
     public SingleArticleResponse getArticle(Long articleId) {
         Article article = articleRepository.findById(articleId)
                 .orElseThrow(ArticleNotFoundException::new);
-
 
 
         return null;

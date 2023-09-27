@@ -60,11 +60,29 @@ public class Article extends BaseEntity {
     protected Article() {
     }
 
-    public static Article makeArticle(String title, String description, String body, User author, List<String> tags) {
-        return new Article(null, title, makeSlug(title), description, body, author, tags, new ArrayList<>());
+    public boolean isFavorited(final User currentUser) {
+        return favoritesUser.contains(currentUser);
     }
 
-    private static String makeSlug(String title) {
+    public static Article makeArticle(
+            final String title,
+            final String description,
+            final String body,
+            final User author,
+            final List<String> tags
+    ) {
+        return new Article(null,
+                title,
+                makeSlug(title),
+                description,
+                body,
+                author,
+                tags,
+                new ArrayList<>()
+        );
+    }
+
+    private static String makeSlug(final String title) {
         StringBuilder slugBuilder = new StringBuilder();
 
         Arrays.stream(title.split(" "))
@@ -73,4 +91,5 @@ public class Article extends BaseEntity {
 
         return slugBuilder.substring(0, slugBuilder.length() - 2);
     }
+
 }

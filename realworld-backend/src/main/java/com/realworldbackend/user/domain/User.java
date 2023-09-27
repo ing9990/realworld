@@ -44,7 +44,7 @@ public class User {
 
     @Enumerated(EnumType.STRING)
     @Column(name = "user_status")
-    private UserStatus userStatus;
+    private UserStatus userStatus = UserStatus.ACTIVE;
 
     @CreatedDate
     @Column(name = "create_at", updatable = false, nullable = false)
@@ -98,6 +98,12 @@ public class User {
         }
 
         this.avatar.updateProfile(bio, image);
+    }
+
+    public boolean isFollow(
+            final User targetUser
+    ) {
+        return this.followers.contains(targetUser);
     }
 
     public void followTargetUser(
