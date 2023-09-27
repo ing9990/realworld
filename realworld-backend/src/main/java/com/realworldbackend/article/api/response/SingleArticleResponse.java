@@ -36,7 +36,7 @@ public record SingleArticleResponse(
                     currentUser.getUsername(),
                     currentUser.getAvatar().getBio(),
                     currentUser.getAvatar().getImage(),
-                    currentUser.getFollowers().isFollow(user)
+                    currentUser.isFollow(user)
             );
         }
     }
