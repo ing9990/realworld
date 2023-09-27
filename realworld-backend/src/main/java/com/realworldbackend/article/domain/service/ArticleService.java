@@ -1,5 +1,6 @@
 package com.realworldbackend.article.domain.service;
 
+import com.realworldbackend.article.api.response.SingleArticleResponse;
 import com.realworldbackend.article.domain.Article;
 import com.realworldbackend.article.domain.ArticleNotFoundException;
 import com.realworldbackend.article.domain.ArticleRepository;
@@ -28,8 +29,12 @@ public class ArticleService {
         return article.getId();
     }
 
-    public Article getArticle(Long articleId) {
-        return articleRepository.findById(articleId)
+    public SingleArticleResponse getArticle(Long articleId) {
+        Article article = articleRepository.findById(articleId)
                 .orElseThrow(ArticleNotFoundException::new);
+
+
+
+        return null;
     }
 }

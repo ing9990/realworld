@@ -3,64 +3,55 @@ package com.realworldbackend.user.domain.service;
 import com.realworldbackend.common.exception.ErrorCode;
 import com.realworldbackend.common.resolvers.CurrentUserDto;
 import com.realworldbackend.user.api.response.UserProfileResponse;
-import com.realworldbackend.user.domain.Follow;
-import com.realworldbackend.user.domain.FollowRepository;
 import com.realworldbackend.user.domain.User;
 import com.realworldbackend.user.domain.UserRepository;
-import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 @Service
-@Transactional
 @RequiredArgsConstructor
 public class ProfileService {
 
     private final UserRepository userRepository;
-    private final FollowRepository followRepository;
 
+    @Transactional(readOnly = true)
     public UserProfileResponse getProfileByUsername(
-            final CurrentUserDto currentUser,
+            final CurrentUserDto currentUserDto,
             final String username
     ) {
         User targetUser = userRepository.findUserByUsername(username)
                 .orElseThrow(() -> new UserNotFoundException(ErrorCode.NOT_FOUND_USER_FOLLOW));
 
-        System.out.println(targetUser);
+        User currentUser = userRepository.findUserByUserId(currentUserDto.userId())
+                .orElseThrow(() -> new UserNotFoundException(ErrorCode.NOT_FOUND_USER_FOLLOW));
 
-        if (currentUser.isLogin()) {
-            User user = userRepository.findUserByUserId(currentUser.userId())
-                    .orElseThrow(() -> new UserNotFoundException(ErrorCode.NOT_FOUND_USER_FOLLOW));
-
-            boolean follow = followRepository.existsByUserAndFollowing(user, targetUser);
-            return UserProfileResponse.from(targetUser, follow);
-        }
-
-        return UserProfileResponse.from(targetUser);
+        return UserProfileResponse.from(targetUser, currentUser);
     }
 
-    public UserProfileResponse follow(CurrentUserDto currentUser, String username) {
-        User user = userRepository.findUserByUserId(currentUser.userId()).orElseThrow(
+    @Transactional
+    public UserProfileResponse follow(CurrentUserDto currentUserDto, String username) {
+        User target = userRepository.findUserByUsername(username)
+                .orElseThrow(() -> new UserNotFoundException(ErrorCode.NOT_FOUND_USER_FOLLOW));
+
+        User currentUser = userRepository.findUserByUserId(currentUserDto.userId()).orElseThrow(
+                () -> new UserNotFoundException(ErrorCode.NOT_FOUND_USER_FOLLOW));
+
+        target.followTargetUser(currentUser);
+
+        return UserProfileResponse.from(target, currentUser);
+    }
+
+    @Transactional
+    public UserProfileResponse unfollow(CurrentUserDto currentUserDto, String username) {
+        User currentUser = userRepository.findUserByUserId(currentUserDto.userId()).orElseThrow(
                 () -> new UserNotFoundException(ErrorCode.NOT_FOUND_USER_FOLLOW));
 
         User target = userRepository.findUserByUsername(username)
                 .orElseThrow(() -> new UserNotFoundException(ErrorCode.NOT_FOUND_USER_FOLLOW));
 
-        if (followRepository.existsByUserAndFollowing(user, target)) {
-            return UserProfileResponse.from(target, true);
-        }
-        followRepository.save(new Follow(user, target));
-        return UserProfileResponse.from(target, true);
-    }
+        target.unFollowTargetUser(currentUser);
 
-    public UserProfileResponse unfollow(CurrentUserDto currentUser, String username) {
-        User user = userRepository.findUserByUserId(currentUser.userId()).orElseThrow(
-                () -> new UserNotFoundException(ErrorCode.NOT_FOUND_USER_FOLLOW));
-
-        User target = userRepository.findUserByUsername(username)
-                .orElseThrow(() -> new UserNotFoundException(ErrorCode.NOT_FOUND_USER_FOLLOW));
-
-        followRepository.deleteByUserAndTargetUser(user, target);
-        return UserProfileResponse.from(target, false);
+        return UserProfileResponse.from(target, currentUser);
     }
 }

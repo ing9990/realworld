@@ -34,7 +34,7 @@ public record SingleArticleResponse(
                 .updatedAt(article.getUpdatedAt())
                 .favorited(false)
                 .favoritesCount(article.getFavoritesUser().size())
-                .author(AuthorResponse.from(article.getAuthor()))
+//                .author(AuthorResponse.from(article.getAuthor()))
                 .build();
     }
 }

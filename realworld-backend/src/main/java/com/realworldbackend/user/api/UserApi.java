@@ -1,21 +1,16 @@
 package com.realworldbackend.user.api;
 
-import com.realworldbackend.auth.dto.AccessAndRefreshTokens;
 import com.realworldbackend.auth.service.JwtService;
 import com.realworldbackend.common.annotations.CurrentUser;
 import com.realworldbackend.common.resolvers.CurrentUserDto;
 import com.realworldbackend.user.api.request.UserUpdateRequest;
 import com.realworldbackend.user.api.response.UserResponse;
-import com.realworldbackend.user.domain.User;
 import com.realworldbackend.user.domain.service.UserService;
-import jakarta.servlet.http.HttpServletRequest;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-
-import javax.xml.transform.OutputKeys;
 
 @RestController
 @RequestMapping("/api/user")
@@ -30,8 +25,8 @@ public class UserApi {
             @CurrentUser CurrentUserDto currentUserDto
     ) {
         return ResponseEntity.status(HttpStatus.OK)
-                .body(UserResponse.from(userService.getUserByUserId(
-                        currentUserDto.userId()), ""));
+                .body(UserResponse.from(userService.getUserByUserId(currentUserDto.userId()),
+                        jwtService.getRefreshTokenByUserId(currentUserDto.userId())));
     }
 
     @PutMapping
@@ -42,7 +37,8 @@ public class UserApi {
         userService.updateUser(currentUserDto.userId(), request);
 
         return ResponseEntity.status(HttpStatus.OK)
-                .body(UserResponse.from(userService.getUserByUserId(currentUserDto.userId()), ""));
-
+                .body(UserResponse.from(userService.getUserByUserId(currentUserDto.userId()),
+                        jwtService.getRefreshTokenByUserId(currentUserDto.userId())
+                ));
     }
 }

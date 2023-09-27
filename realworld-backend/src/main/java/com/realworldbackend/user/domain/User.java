@@ -9,6 +9,8 @@ import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedDate;
 
 import java.time.LocalDateTime;
+import java.util.HashSet;
+import java.util.Set;
 import java.util.regex.Pattern;
 
 @Entity
@@ -35,7 +37,10 @@ public class User {
     private String password;
 
     @Embedded
-    private Avatar avatar;
+    private Avatar avatar = new Avatar();
+
+    @OneToMany
+    private Set<User> followers = new HashSet<>();
 
     @Enumerated(EnumType.STRING)
     @Column(name = "user_status")
@@ -87,9 +92,29 @@ public class User {
         this.email = email == null ? this.email : email;
         this.username = username == null ? this.username : username;
         this.password = "".equals(password) || password == null ? this.password : password;
+
         if (this.avatar == null) {
             this.avatar = new Avatar();
         }
+
         this.avatar.updateProfile(bio, image);
+    }
+
+    public void followTargetUser(
+            final User currentUser
+    ) {
+        if (this.followers == null) {
+            this.followers = new HashSet<>();
+        }
+        this.followers.add(currentUser);
+    }
+
+    public void unFollowTargetUser(
+            final User currentUser
+    ) {
+        if (this.followers == null) {
+            this.followers = new HashSet<>();
+        }
+        this.followers.remove(currentUser);
     }
 }

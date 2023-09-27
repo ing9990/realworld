@@ -5,7 +5,6 @@ import com.realworldbackend.common.exception.ErrorCode;
 
 public class PasswordMisMatchException extends BusinessException {
 
-
     public PasswordMisMatchException(String message, ErrorCode errorCode) {
         super(message, errorCode);
     }

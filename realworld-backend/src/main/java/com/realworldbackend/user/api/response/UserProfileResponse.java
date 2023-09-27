@@ -12,7 +12,6 @@ public record UserProfileResponse(
         String image,
         boolean following
 ) {
-
     public UserProfileResponse(String username, String bio, String image, boolean following) {
         this.username = username;
         this.bio = bio;
@@ -20,12 +19,14 @@ public record UserProfileResponse(
         this.following = following;
     }
 
-    public static UserProfileResponse from(final User user, boolean following) {
-        return new UserProfileResponse(user.getUsername(), user.getAvatar().getBio(), user.getAvatar().getImage(), following);
-    }
-
-
-    public static UserProfileResponse from(final User user) {
-        return new UserProfileResponse(user.getUsername(), user.getAvatar().getBio(), user.getAvatar().getImage(), false);
+    public static UserProfileResponse from(
+            final User targetUser,
+            final User currentUser
+    ) {
+        return new UserProfileResponse(targetUser.getUsername(),
+                targetUser.getAvatar().getBio(),
+                targetUser.getAvatar().getImage(),
+                targetUser.getFollowers().contains(currentUser)
+        );
     }
 }

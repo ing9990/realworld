@@ -15,12 +15,16 @@ public class Article extends BaseEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @Column(name = "article_title", nullable = false)
     private String title;
 
+    @Column(name = "article_slug", nullable = false)
     private String slug;
 
+    @Column(name = "article_description")
     private String description;
 
+    @Column(name = "article_body")
     private String body;
 
     @OneToOne(fetch = FetchType.LAZY)
@@ -34,7 +38,15 @@ public class Article extends BaseEntity {
     @OneToMany
     private Set<User> favoritesUser = new HashSet<>();
 
-    protected Article(Long id, String title, String slug, String description, String body, User author, List<String> tagList, List<User> favoritesUser) {
+    protected Article(
+            Long id,
+            String title,
+            String slug,
+            String description,
+            String body, User author,
+            Collection<String> tagList,
+            Collection<User> favoritesUser
+    ) {
         this.id = id;
         this.title = title;
         this.slug = slug;
