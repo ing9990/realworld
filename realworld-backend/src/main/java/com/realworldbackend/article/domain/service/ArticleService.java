@@ -66,11 +66,7 @@ public class ArticleService {
 
     @Transactional(readOnly = true)
     public MultiArticlesResponse searchCondition(final ArticleFindCondition articleFindCondition) {
-        log.info(articleFindCondition.toString());
-
-        List<Article> articles = articleRepository.search(articleFindCondition);
-
-        log.info(articles.toString());
+        List<Article> articles = articleRepository.findAll(articleFindCondition);
 
         return MultiArticlesResponse.from(articles);
     }

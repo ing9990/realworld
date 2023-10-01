@@ -6,5 +6,5 @@ import com.realworldbackend.article.domain.Article;
 import java.util.List;
 
 public interface ArticleQueryRepository {
-    List<Article> search(ArticleFindCondition condition);
+    List<Article> findAll(ArticleFindCondition condition);
 }

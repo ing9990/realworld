@@ -41,7 +41,12 @@ public class Article extends BaseEntity {
     @ManyToMany
     private Set<Tag> tags = new HashSet<>();
 
-    @OneToMany
+    @ManyToMany
+    @JoinTable(
+            name = "article_favorites",
+            joinColumns = @JoinColumn(name = "article_id"),
+            inverseJoinColumns = @JoinColumn(name = "user_id")
+    )
     private Set<User> favoritesUsers = new HashSet<>();
 
     protected Article(
