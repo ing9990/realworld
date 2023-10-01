@@ -5,6 +5,8 @@ import com.realworldbackend.auth.service.AuthException;
 import com.realworldbackend.auth.service.JwtProvider;
 import com.realworldbackend.common.annotations.CurrentUser;
 import com.realworldbackend.common.exception.ErrorCode;
+import com.realworldbackend.user.domain.UserRepository;
+import com.realworldbackend.user.domain.service.UserNotFoundException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.core.MethodParameter;
@@ -21,6 +23,7 @@ import java.util.Objects;
 @Slf4j
 public class CurrentUserResolver implements HandlerMethodArgumentResolver {
 
+    private final UserRepository userRepository;
     private final JwtProvider jwtProvider;
 
     @Override
@@ -44,7 +47,7 @@ public class CurrentUserResolver implements HandlerMethodArgumentResolver {
                         .required()) {
                     throw new AuthException(ErrorCode.INVALID_ACCESS_TOKEN);
                 } else {
-                    return new CurrentUserDto(-1L, LoginType.LOGIN_NONE);
+                    return null;
                 }
             }
 
@@ -55,7 +58,7 @@ public class CurrentUserResolver implements HandlerMethodArgumentResolver {
             String rawToken = authorizationToken.substring(6);
             String userId = jwtProvider.getSubject(rawToken).trim();
 
-            return new CurrentUserDto(Long.parseLong(userId), LoginType.LOGIN);
+            return userRepository.findUserByUserId(Long.parseLong(userId)).orElseThrow(UserNotFoundException::new);
         } catch (IllegalArgumentException e) {
             throw new AuthException(ErrorCode.INVALID_ACCESS_TOKEN);
         }

@@ -47,13 +47,11 @@ public class UserService {
                 .orElseThrow(UserNotFoundException::new);
     }
 
-    public void updateUser(Long userId, UserUpdateRequest request) {
-        User user = userRepository.findUserByUserId(userId)
-                .orElseThrow(UserNotFoundException::new);
-
-
+    public void updateUser(User currentUser,
+                           UserUpdateRequest request
+    ) {
         if (request != null) {
-            user.update(
+            currentUser.update(
                     request.email(),
                     request.username(),
                     request.password() == null ? "" : encoder.encode(request.password()),

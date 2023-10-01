@@ -5,12 +5,12 @@ import com.realworldbackend.article.api.dto.request.CreateArticleRequest;
 import com.realworldbackend.article.api.dto.response.MultiArticlesResponse;
 import com.realworldbackend.article.api.dto.response.SingleArticleResponse;
 import com.realworldbackend.article.domain.service.ArticleService;
+import com.realworldbackend.common.annotations.CurrentUser;
 import com.realworldbackend.user.domain.User;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -20,20 +20,19 @@ public class ArticleApi {
 
     private final ArticleService articleService;
 
-
     @GetMapping
     public ResponseEntity<MultiArticlesResponse> getAllArticles(
-            @AuthenticationPrincipal User currentUser,
+            @CurrentUser(required = false) User currentUser,
             ArticleFindCondition articleFindCondition
     ) {
-        var response = articleService.searchCondition(articleFindCondition);
-
-        return ResponseEntity.status(HttpStatus.OK).body(response);
+        return ResponseEntity.status(HttpStatus.OK).body(
+                articleService.searchCondition(currentUser, articleFindCondition)
+        );
     }
 
     @PostMapping
     public ResponseEntity<SingleArticleResponse> createArticle(
-            @AuthenticationPrincipal User currentUser,
+            @CurrentUser(required = false) User currentUser,
             @Valid @RequestBody CreateArticleRequest createArticleRequest
     ) {
         Long articleId = articleService.makeArticle(
@@ -45,7 +44,7 @@ public class ArticleApi {
         );
 
         return ResponseEntity.status(HttpStatus.CREATED).body(
-                articleService.getArticle(articleId)
+                articleService.getArticle(currentUser, articleId)
         );
     }
 }

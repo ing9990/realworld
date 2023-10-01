@@ -17,36 +17,26 @@ public class ProfileService {
 
     @Transactional(readOnly = true)
     public UserProfileResponse getProfileByUsername(
-            final CurrentUserDto currentUserDto,
+            final User currentUser,
             final String username
     ) {
         User targetUser = userRepository.findUserByUsername(username)
-                .orElseThrow(() -> new UserNotFoundException(ErrorCode.NOT_FOUND_USER_FOLLOW));
-
-        User currentUser = userRepository.findUserByUserId(currentUserDto.userId())
                 .orElseThrow(() -> new UserNotFoundException(ErrorCode.NOT_FOUND_USER_FOLLOW));
 
         return UserProfileResponse.from(targetUser, currentUser);
     }
 
     @Transactional
-    public UserProfileResponse follow(CurrentUserDto currentUserDto, String username) {
+    public UserProfileResponse follow(User currentUser, String username) {
         User target = userRepository.findUserByUsername(username)
                 .orElseThrow(() -> new UserNotFoundException(ErrorCode.NOT_FOUND_USER_FOLLOW));
 
-        User currentUser = userRepository.findUserByUserId(currentUserDto.userId()).orElseThrow(
-                () -> new UserNotFoundException(ErrorCode.NOT_FOUND_USER_FOLLOW));
-
         target.followTargetUser(currentUser);
-
         return UserProfileResponse.from(target, currentUser);
     }
 
     @Transactional
-    public UserProfileResponse unfollow(CurrentUserDto currentUserDto, String username) {
-        User currentUser = userRepository.findUserByUserId(currentUserDto.userId()).orElseThrow(
-                () -> new UserNotFoundException(ErrorCode.NOT_FOUND_USER_FOLLOW));
-
+    public UserProfileResponse unfollow(User currentUser, String username) {
         User target = userRepository.findUserByUsername(username)
                 .orElseThrow(() -> new UserNotFoundException(ErrorCode.NOT_FOUND_USER_FOLLOW));
 

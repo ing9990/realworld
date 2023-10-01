@@ -1,45 +1,115 @@
 {
   "articles": [
     {
-      "slug": "how-to-train-your-dragon",
-      "title": "How to train your dragon",
-      "description": "Ever wonder how?",
-      "body": "It takes a Jacobian",
-      "tagList": [
-        "dragons",
-        "training"
-      ],
-      "createdAt": "2016-02-18T03:22:56.637Z",
-      "updatedAt": "2016-02-18T03:48:35.824Z",
-      "favorited": false,
-      "favoritesCount": 0,
-      "author": {
-        "username": "jake",
-        "bio": "I work at statefarm",
-        "image": "https://i.stack.imgur.com/xHWG8.jpg",
-        "following": false
+      "article": {
+        "slug": "How-to-train-your-dragon",
+        "title": "How to train your dragon",
+        "description": "Ever wonder how?",
+        "body": "Very carefully.",
+        "tagList": [
+          "training",
+          "dragons"
+        ],
+        "createdAt": "2023-10-01T14:29:43.088432",
+        "updatedAt": "2023-10-01T14:29:43.088463",
+        "favorited": false,
+        "favoritesCount": 0,
+        "author": {
+          "username": "jake",
+          "bio": "",
+          "image": "",
+          "following": false
+        }
       }
     },
     {
-      "slug": "how-to-train-your-dragon-2",
-      "title": "How to train your dragon 2",
-      "description": "So toothless",
-      "body": "It a dragon",
-      "tagList": [
-        "dragons",
-        "training"
-      ],
-      "createdAt": "2016-02-18T03:22:56.637Z",
-      "updatedAt": "2016-02-18T03:48:35.824Z",
-      "favorited": false,
-      "favoritesCount": 0,
-      "author": {
-        "username": "jake",
-        "bio": "I work at statefarm",
-        "image": "https://i.stack.imgur.com/xHWG8.jpg",
-        "following": false
+      "article": {
+        "slug": "How-to-train-your-dragon",
+        "title": "How to train your dragon",
+        "description": "Ever wonder how?",
+        "body": "Very carefully.",
+        "tagList": [
+          "training",
+          "dragons"
+        ],
+        "createdAt": "2023-10-01T14:29:43.687509",
+        "updatedAt": "2023-10-01T14:29:43.687524",
+        "favorited": false,
+        "favoritesCount": 0,
+        "author": {
+          "username": "jake",
+          "bio": "",
+          "image": "",
+          "following": false
+        }
+      }
+    },
+    {
+      "article": {
+        "slug": "How-to-train-your-dragon",
+        "title": "How to train your dragon",
+        "description": "Ever wonder how?",
+        "body": "Very carefully.",
+        "tagList": [
+          "training",
+          "dragons"
+        ],
+        "createdAt": "2023-10-01T14:29:44.383514",
+        "updatedAt": "2023-10-01T14:29:44.383544",
+        "favorited": false,
+        "favoritesCount": 0,
+        "author": {
+          "username": "jake",
+          "bio": "",
+          "image": "",
+          "following": false
+        }
+      }
+    },
+    {
+      "article": {
+        "slug": "How-to-train-your-dragon",
+        "title": "How to train your dragon",
+        "description": "Ever wonder how?",
+        "body": "Very carefully.",
+        "tagList": [
+          "training",
+          "dragons"
+        ],
+        "createdAt": "2023-10-01T14:29:44.821713",
+        "updatedAt": "2023-10-01T14:29:44.821736",
+        "favorited": false,
+        "favoritesCount": 0,
+        "author": {
+          "username": "jake",
+          "bio": "",
+          "image": "",
+          "following": false
+        }
+      }
+    },
+    {
+      "article": {
+        "slug": "How-to-train-your-dragon",
+        "title": "How to train your dragon",
+        "description": "Ever wonder how?",
+        "body": "Very carefully.",
+        "tagList": [
+          "training",
+          "dragons"
+        ],
+        "createdAt": "2023-10-01T14:29:45.239146",
+        "updatedAt": "2023-10-01T14:29:45.239237",
+        "favorited": false,
+        "favoritesCount": 0,
+        "author": {
+          "username": "jake",
+          "bio": "",
+          "image": "",
+          "following": false
+        }
       }
     }
   ],
-  "articlesCount": 2
+  "articlesCount": 5
 }

@@ -31,13 +31,18 @@ public class JwtProvider {
         this.refreshExpirationTime = refreshExpirationTime;
     }
 
-    public AccessAndRefreshTokens generateLoginToken(final String subject) {
+    public AccessAndRefreshTokens generateLoginToken(
+            final String subject
+    ) {
         final String refreshToken = createToken(EMPTY_SUBJECT, refreshExpirationTime);
         final String accessToken = createToken(subject, accessExpirationTime);
         return new AccessAndRefreshTokens(refreshToken, accessToken);
     }
 
-    private String createToken(final String subject, final Long validityInMilliseconds) {
+    private String createToken(
+            final String subject,
+            final Long validityInMilliseconds
+    ) {
         final Date now = new Date();
         final Date validity = new Date(now.getTime() + validityInMilliseconds);
 
@@ -75,7 +80,9 @@ public class JwtProvider {
         }
     }
 
-    public String getSubject(final String token) {
+    public String getSubject(
+            final String token
+    ) {
         return parseToken(token).getBody().getSubject();
     }
 

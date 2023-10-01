@@ -3,6 +3,7 @@ package com.realworldbackend.user.api;
 import com.realworldbackend.common.annotations.CurrentUser;
 import com.realworldbackend.common.resolvers.CurrentUserDto;
 import com.realworldbackend.user.api.response.UserProfileResponse;
+import com.realworldbackend.user.domain.User;
 import com.realworldbackend.user.domain.service.ProfileService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -18,7 +19,7 @@ public class ProfilesApi {
 
     @GetMapping
     public ResponseEntity<UserProfileResponse> getProfile(
-            @CurrentUser(required = false) CurrentUserDto currentUser,
+            @CurrentUser(required = false) User currentUser,
             @PathVariable String username
     ) {
         UserProfileResponse response = profileService.getProfileByUsername(currentUser, username);
@@ -28,7 +29,7 @@ public class ProfilesApi {
 
     @PostMapping("/follow")
     public ResponseEntity<UserProfileResponse> followProfile(
-            @CurrentUser CurrentUserDto currentUser,
+            @CurrentUser User currentUser,
             @PathVariable String username
     ) {
         UserProfileResponse response = profileService.follow(currentUser, username);
@@ -38,7 +39,7 @@ public class ProfilesApi {
 
     @DeleteMapping("/follow")
     public ResponseEntity<UserProfileResponse> unfollowProfile(
-            @CurrentUser CurrentUserDto currentUser,
+            @CurrentUser User currentUser,
             @PathVariable String username
     ) {
         UserProfileResponse response = profileService.unfollow(currentUser, username);

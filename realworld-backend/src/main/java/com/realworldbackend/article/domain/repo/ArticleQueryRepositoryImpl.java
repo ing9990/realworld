@@ -24,7 +24,9 @@ public class ArticleQueryRepositoryImpl implements ArticleQueryRepository {
 
     @Override
     public List<Article> findAll(final ArticleFindCondition articleFindCondition) {
-        return queryFactory.selectDistinct(article)
+        return queryFactory.selectDistinct(
+                article
+                )
                 .from(article)
                 .leftJoin(article.tags, QTag.tag)
                 .leftJoin(article.author, new QUser("articles_author"))

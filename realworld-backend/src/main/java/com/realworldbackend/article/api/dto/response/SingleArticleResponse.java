@@ -45,8 +45,8 @@ public record SingleArticleResponse(
     }
 
     public static SingleArticleResponse from(
-            final Article article
-
+            final Article article,
+            final User currentUser
     ) {
         return SingleArticleResponse.builder()
                 .title(article.getTitle())
@@ -56,7 +56,7 @@ public record SingleArticleResponse(
                 .tagList(article.getTags().stream().map(Tag::getName).collect(Collectors.toSet()))
                 .createdAt(article.getCreatedAt())
                 .updatedAt(article.getUpdatedAt())
-                .favorited(false)
+                .favorited(article.isFavorited(currentUser))
                 .favoritesCount(article.getFavoritesUsers().size())
                 .author(SingleArticleAuthorResponse.from(article.getAuthor()))
                 .build();

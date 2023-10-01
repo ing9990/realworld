@@ -2,9 +2,9 @@ package com.realworldbackend.user.api;
 
 import com.realworldbackend.auth.service.JwtService;
 import com.realworldbackend.common.annotations.CurrentUser;
-import com.realworldbackend.common.resolvers.CurrentUserDto;
 import com.realworldbackend.user.api.request.UserUpdateRequest;
 import com.realworldbackend.user.api.response.UserResponse;
+import com.realworldbackend.user.domain.User;
 import com.realworldbackend.user.domain.service.UserService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -22,20 +22,20 @@ public class UserApi {
 
     @GetMapping
     public ResponseEntity<UserResponse> currentUser(
-            @CurrentUser CurrentUserDto currentUserDto
+            @CurrentUser User currentUser
     ) {
         return ResponseEntity.status(HttpStatus.OK)
-                .body(UserResponse.from(userService.getUserByUserId(currentUserDto.userId()), ""));
+                .body(UserResponse.from(currentUser, ""));
     }
 
     @PutMapping
     public ResponseEntity<UserResponse> updateUser(
-            @CurrentUser CurrentUserDto currentUserDto,
+            @CurrentUser User currentUser,
             @Valid @RequestBody UserUpdateRequest request
     ) {
-        userService.updateUser(currentUserDto.userId(), request);
+        userService.updateUser(currentUser, request);
 
         return ResponseEntity.status(HttpStatus.OK)
-                .body(UserResponse.from(userService.getUserByUserId(currentUserDto.userId()), ""));
+                .body(UserResponse.from(currentUser, ""));
     }
 }

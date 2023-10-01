@@ -58,16 +58,22 @@ public class ArticleService {
     }
 
     @Transactional(readOnly = true)
-    public SingleArticleResponse getArticle(final Long articleId) {
+    public SingleArticleResponse getArticle(
+            final User currentUser,
+            final Long articleId
+    ) {
         Article article = articleRepository.findArticleById(articleId);
 
-        return SingleArticleResponse.from(article);
+        return SingleArticleResponse.from(article, currentUser);
     }
 
     @Transactional(readOnly = true)
-    public MultiArticlesResponse searchCondition(final ArticleFindCondition articleFindCondition) {
+    public MultiArticlesResponse searchCondition(
+            final User currentUser,
+            final ArticleFindCondition articleFindCondition
+    ) {
         List<Article> articles = articleRepository.findAll(articleFindCondition);
 
-        return MultiArticlesResponse.from(articles);
+        return MultiArticlesResponse.from(articles, currentUser);
     }
 }

@@ -97,7 +97,9 @@ public class Article extends BaseEntity {
         );
     }
 
-    private static String makeSlug(final String title) {
+    private static String makeSlug(
+            final String title
+    ) {
         StringBuilder slugBuilder = new StringBuilder();
 
         Arrays.stream(title.split(" "))
