@@ -3,11 +3,13 @@ package com.realworldbackend.article.api.dto.response;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 import com.realworldbackend.article.domain.Article;
+import com.realworldbackend.article.domain.Tag;
 import com.realworldbackend.user.domain.User;
 import lombok.Builder;
 
 import java.time.LocalDateTime;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 @JsonTypeName("article")
 @JsonTypeInfo(include = JsonTypeInfo.As.WRAPPER_OBJECT, use = JsonTypeInfo.Id.NAME)
@@ -51,7 +53,7 @@ public record SingleArticleResponse(
                 .slug(article.getSlug())
                 .description(article.getDescription())
                 .body(article.getBody())
-                .tagList(article.getTagList())
+                .tagList(article.getTags().stream().map(Tag::getName).collect(Collectors.toSet()))
                 .createdAt(article.getCreatedAt())
                 .updatedAt(article.getUpdatedAt())
                 .favorited(false)

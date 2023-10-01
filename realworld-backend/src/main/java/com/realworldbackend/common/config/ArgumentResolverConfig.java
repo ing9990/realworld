@@ -15,7 +15,9 @@ public class ArgumentResolverConfig implements WebMvcConfigurer {
     private final CurrentUserResolver currentUserResolver;
 
     @Override
-    public void addArgumentResolvers(List<HandlerMethodArgumentResolver> resolvers) {
+    public void addArgumentResolvers(
+            List<HandlerMethodArgumentResolver> resolvers
+    ) {
         resolvers.add(currentUserResolver);
     }
 }

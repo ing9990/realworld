@@ -10,7 +10,7 @@ import org.hibernate.annotations.DynamicUpdate;
 import java.util.*;
 
 @NamedEntityGraph(name = "with_tagList", attributeNodes = {
-        @NamedAttributeNode("tagList")
+        @NamedAttributeNode("tags")
 })
 @Getter
 @Entity
@@ -38,21 +38,20 @@ public class Article extends BaseEntity {
     @JoinColumn(name = "author_id")
     private User author;
 
-    @ElementCollection
-    @CollectionTable(name = "tags", joinColumns = @JoinColumn(name = "article_id"))
-    private Set<String> tagList = new HashSet<>();
+    @ManyToMany
+    private Set<Tag> tags = new HashSet<>();
 
     @OneToMany
     private Set<User> favoritesUsers = new HashSet<>();
 
     protected Article(
-            Long id,
-            String title,
-            String slug,
-            String description,
-            String body, User author,
-            Collection<String> tagList,
-            Collection<User> favoritesUsers
+            final Long id,
+            final String title,
+            final String slug,
+            final String description,
+            final String body,
+            final User author,
+            final Collection<User> favoritesUsers
     ) {
         this.id = id;
         this.title = title;
@@ -60,7 +59,7 @@ public class Article extends BaseEntity {
         this.description = description;
         this.body = body;
         this.author = author;
-        this.tagList = new HashSet<>(tagList);
+        this.tags = new HashSet<>();
         this.favoritesUsers = new HashSet<>(favoritesUsers);
     }
 
@@ -71,12 +70,17 @@ public class Article extends BaseEntity {
         return favoritesUsers.contains(currentUser);
     }
 
+    public boolean hasTag(
+            final String tag
+    ) {
+        return this.tags.stream().anyMatch(t -> t.getName().equals(tag));
+    }
+
     public static Article makeArticle(
             final String title,
             final String description,
             final String body,
-            final User author,
-            final List<String> tags
+            final User author
     ) {
         return new Article(null,
                 title,
@@ -84,7 +88,6 @@ public class Article extends BaseEntity {
                 description,
                 body,
                 author,
-                tags,
                 new ArrayList<>()
         );
     }
@@ -99,4 +102,7 @@ public class Article extends BaseEntity {
         return slugBuilder.substring(0, slugBuilder.length() - 1);
     }
 
+    public void addTags(Set<Tag> tags) {
+        this.tags.addAll(tags);
+    }
 }

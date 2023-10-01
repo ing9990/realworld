@@ -1,10 +1,10 @@
 package com.realworldbackend.article.api;
 
+import com.realworldbackend.article.api.dto.ArticleFindCondition;
 import com.realworldbackend.article.api.dto.request.CreateArticleRequest;
+import com.realworldbackend.article.api.dto.response.MultiArticlesResponse;
 import com.realworldbackend.article.api.dto.response.SingleArticleResponse;
 import com.realworldbackend.article.domain.service.ArticleService;
-import com.realworldbackend.common.annotations.CurrentUser;
-import com.realworldbackend.common.resolvers.CurrentUserDto;
 import com.realworldbackend.user.domain.User;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -19,6 +19,17 @@ import org.springframework.web.bind.annotation.*;
 public class ArticleApi {
 
     private final ArticleService articleService;
+
+
+    @GetMapping
+    public ResponseEntity<MultiArticlesResponse> getAllArticles(
+            @AuthenticationPrincipal User currentUser,
+            ArticleFindCondition articleFindCondition
+    ) {
+        var response = articleService.searchCondition(articleFindCondition);
+
+        return ResponseEntity.status(HttpStatus.OK).body(response);
+    }
 
     @PostMapping
     public ResponseEntity<SingleArticleResponse> createArticle(

@@ -1,10 +1,11 @@
-package com.realworldbackend.article.domain;
+package com.realworldbackend.article.domain.repo;
 
+import com.realworldbackend.article.domain.Article;
 import org.springframework.data.jpa.repository.EntityGraph;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 
-public interface ArticleRepository extends JpaRepository<Article, Long> {
+public interface ArticleJpaRepository extends JpaRepository<Article, Long> {
 
     @EntityGraph(
             value = "with_tagList",
