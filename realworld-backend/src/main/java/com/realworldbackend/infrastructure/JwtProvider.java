@@ -82,10 +82,18 @@ public class JwtProvider {
         }
     }
 
+    private String removePrefix(String token) {
+        try {
+            return token.substring(6);
+        } catch (StringIndexOutOfBoundsException e) {
+            throw new InvalidJwtException(INVALID_ACCESS_TOKEN);
+        }
+    }
+
     public String getSubject(
             final String token
     ) {
-        return parseToken(token).getBody().getSubject();
+        return parseToken(removePrefix(token)).getBody().getSubject();
     }
 
     private Jws<Claims> parseToken(final String token) {

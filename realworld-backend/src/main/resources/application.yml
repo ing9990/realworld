@@ -18,9 +18,12 @@ spring:
     generate-ddl: true
     show-sql: true
     open-in-view: false
+    properties:
+      hibernate:
+        default_batch_fetch_size: 1000
 
 security:
   jwt:
     secret-key: UmVhbHdvcmxkLUFwcGxpY2F0aW9uLVNwcmluZ2Jvb3Q=
-    access-expiration-time: 3_600_000_000
-    refresh-expiration-time: 2_592_000_000_000
+    access-expiration-time: 3_600_000
+    refresh-expiration-time: 2_592_000_000

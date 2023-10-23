@@ -3,6 +3,7 @@ package com.realworldbackend.domain.article;
 import com.realworldbackend.domain.article.tag.Tag;
 import com.realworldbackend.domain.user.User;
 import jakarta.persistence.*;
+import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import org.hibernate.annotations.DynamicInsert;
 import org.hibernate.annotations.DynamicUpdate;
@@ -10,13 +11,11 @@ import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedDate;
 
 import java.time.Instant;
-import java.time.LocalDateTime;
-import java.time.ZoneId;
 import java.util.*;
 import java.util.stream.Collectors;
 
 import static jakarta.persistence.CascadeType.PERSIST;
-import static jakarta.persistence.FetchType.EAGER;
+import static jakarta.persistence.FetchType.LAZY;
 
 @NamedEntityGraph(name = "with_tagList", attributeNodes = {
         @NamedAttributeNode("tags")
@@ -25,6 +24,7 @@ import static jakarta.persistence.FetchType.EAGER;
 @Entity
 @DynamicInsert
 @DynamicUpdate
+@EqualsAndHashCode(of = {"id"})
 public class Article {
 
     @Id
@@ -43,7 +43,7 @@ public class Article {
     @Column(name = "article_body")
     private String body;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = LAZY)
     @JoinColumn(name = "author_id")
     private User author;
 
@@ -53,7 +53,7 @@ public class Article {
     @JoinTable(name = "article_favorites",
             joinColumns = @JoinColumn(name = "article_id", referencedColumnName = "id", nullable = false),
             inverseJoinColumns = @JoinColumn(name = "user_id", referencedColumnName = "user_id", nullable = false))
-    @ManyToMany(fetch = EAGER, cascade = PERSIST)
+    @ManyToMany(fetch = LAZY, cascade = PERSIST)
     private Set<User> userFavorited = new HashSet<>();
 
     @CreatedDate
@@ -67,10 +67,6 @@ public class Article {
     @Transient
     private boolean isFavorited = false;
 
-    public Article withFavorited(User viewer) {
-        isFavorited = userFavorited.contains(viewer);
-        return this;
-    }
 
     protected Article(
             final Long id,
@@ -97,8 +93,10 @@ public class Article {
 
     }
 
-    public boolean isFavorited(final User currentUser) {
-        return userFavorited.contains(currentUser);
+    public Article withFavorited(final User currentUser) {
+        isFavorited = userFavorited.contains(currentUser);
+        author.viewProfile(currentUser);
+        return this;
     }
 
     public boolean hasTag(
@@ -142,7 +140,7 @@ public class Article {
 
     public Set<String> getTags() {
         return this.tags.stream()
-                .map(Tag::toString)
+                .map(Tag::getName)
                 .collect(Collectors.toSet());
     }
 }

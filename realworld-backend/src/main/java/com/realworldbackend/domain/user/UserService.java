@@ -55,4 +55,22 @@ public class UserService {
     public User save(final String email, final String username, final String rawPassword) {
         return userRepository.save(User.registration(username, email, rawPassword));
     }
+
+    public Optional<User> findUserByUsername(String username) {
+        return userRepository.findUserByUsername(username);
+    }
+    public User getUserByUsername(String username) {
+        return userRepository.findUserByUsername(username)
+                .orElseThrow(UserNotFoundException::new);
+    }
+
+    public User follow(User user, User followee) {
+        user.followTargetUser(followee);
+        return user;
+    }
+
+    public User unFollow(User user, User followee) {
+        user.unFollowTargetUser(followee);
+        return user;
+    }
 }

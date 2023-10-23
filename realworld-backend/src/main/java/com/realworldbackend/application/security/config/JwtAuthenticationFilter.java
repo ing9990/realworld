@@ -1,6 +1,7 @@
-package com.realworldbackend.application.security;
+package com.realworldbackend.application.security.config;
 
 import com.google.common.net.HttpHeaders;
+import com.realworldbackend.application.security.UserPayload;
 import com.realworldbackend.infrastructure.JwtProvider;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
@@ -31,8 +32,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
         String authorizationToken = request.getHeader(HttpHeaders.AUTHORIZATION);
 
         if (authorizationToken != null) {
-            String rawToken = authorizationToken.substring(6);
-            String userId = jwtProvider.getSubject(rawToken).trim();
+            String userId = jwtProvider.getSubject(authorizationToken).trim();
             if (SecurityContextHolder.getContext().getAuthentication() == null) {
                 UsernamePasswordAuthenticationToken token = new UsernamePasswordAuthenticationToken(
                         new UserPayload(Long.parseLong(userId)),

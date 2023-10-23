@@ -1,4 +1,4 @@
-package com.realworldbackend.infrastructure.config;
+package com.realworldbackend.application.security.config;
 
 import com.google.common.base.Joiner;
 import jakarta.servlet.http.HttpServletRequest;
@@ -28,7 +28,7 @@ public class RequestLoggingAspect {
     public void apiRequest() {
     }
 
-    @Around(value = "com.realworldbackend.infrastructure.config.RequestLoggingAspect.apiRequest()")
+    @Around(value = "com.realworldbackend.application.security.config.RequestLoggingAspect.apiRequest()")
     public Object doLogging(ProceedingJoinPoint pjp) throws Throwable {
         HttpServletRequest request =
                 ((ServletRequestAttributes) RequestContextHolder.currentRequestAttributes()).getRequest();

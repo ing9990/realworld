@@ -10,11 +10,9 @@ import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedDate;
 
 import java.time.Instant;
-import java.time.LocalDateTime;
 import java.util.HashSet;
 import java.util.Optional;
 import java.util.Set;
-import java.util.function.Consumer;
 import java.util.regex.Pattern;
 
 import static jakarta.persistence.CascadeType.REMOVE;
@@ -43,7 +41,7 @@ public class User {
     private Avatar avatar = new Avatar();
 
     @JoinTable(name = "user_followings",
-            joinColumns = @JoinColumn(name = "follower_id", referencedColumnName = "user_id"),
+            joinColumns = @JoinColumn(name = "user_id", referencedColumnName = "user_id"),
             inverseJoinColumns = @JoinColumn(name = "followee_id", referencedColumnName = "user_id"))
     @OneToMany(cascade = REMOVE)
     private Set<User> followingUsers = new HashSet<>();
@@ -80,10 +78,8 @@ public class User {
         this.avatar = Avatar.withUsername(username);
     }
 
-    public Avatar viewProfile(User user) {
-        return user.avatar.withFollowing(
-                followingUsers.contains(user)
-        );
+    public Avatar viewProfile(User viewer) {
+        return this.avatar.withFollowing(followingUsers.contains(viewer));
     }
 
     public static User registration(final String username, final String email, final String encodedPassword) {
@@ -111,14 +107,14 @@ public class User {
         this.email = email;
     }
 
-    User followTargetUser(
+    protected User followTargetUser(
             final User followee
     ) {
         followingUsers.add(followee);
         return this;
     }
 
-    User unFollowTargetUser(
+    protected User unFollowTargetUser(
             final User followee
     ) {
         followingUsers.remove(followee);
