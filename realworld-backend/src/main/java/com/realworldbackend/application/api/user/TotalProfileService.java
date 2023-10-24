@@ -1,4 +1,4 @@
-package com.realworldbackend.application.api.profile;
+package com.realworldbackend.application.api.user;
 
 import com.realworldbackend.application.exception.ErrorCode;
 import com.realworldbackend.domain.user.User;
@@ -8,8 +8,6 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-
-import java.util.Optional;
 
 
 @Service

@@ -143,4 +143,24 @@ public class Article {
                 .map(Tag::getName)
                 .collect(Collectors.toSet());
     }
+
+    public Article update(Optional<String> title, Optional<String> body, Optional<String> description) {
+        title.ifPresent(this::changeTitle);
+        body.ifPresent(this::changeBody);
+        description.ifPresent(this::changeDescription);
+
+        return this;
+    }
+
+    private void changeDescription(String newDescription) {
+        this.description = newDescription;
+    }
+
+    private void changeBody(String newBody) {
+        this.body = newBody;
+    }
+
+    private void changeTitle(String newTitle) {
+        this.title = newTitle;
+    }
 }

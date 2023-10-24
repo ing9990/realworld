@@ -40,11 +40,12 @@ public class User {
     @Embedded
     private Avatar avatar = new Avatar();
 
-    @JoinTable(name = "user_followings",
+
+    @JoinTable(name = "user_follow",
             joinColumns = @JoinColumn(name = "user_id", referencedColumnName = "user_id"),
             inverseJoinColumns = @JoinColumn(name = "followee_id", referencedColumnName = "user_id"))
     @OneToMany(cascade = REMOVE)
-    private Set<User> followingUsers = new HashSet<>();
+    private Set<User> followers = new HashSet<>();
 
     @ManyToMany(mappedBy = "userFavorited")
     private Set<Article> articleFavorited = new HashSet<>();
@@ -79,7 +80,7 @@ public class User {
     }
 
     public Avatar viewProfile(User viewer) {
-        return this.avatar.withFollowing(followingUsers.contains(viewer));
+        return this.avatar.withFollowing(followers.contains(viewer));
     }
 
     public static User registration(final String username, final String email, final String encodedPassword) {
@@ -110,14 +111,14 @@ public class User {
     protected User followTargetUser(
             final User followee
     ) {
-        followingUsers.add(followee);
+        followers.add(followee);
         return this;
     }
 
     protected User unFollowTargetUser(
             final User followee
     ) {
-        followingUsers.remove(followee);
+        followers.remove(followee);
         return this;
     }
 }

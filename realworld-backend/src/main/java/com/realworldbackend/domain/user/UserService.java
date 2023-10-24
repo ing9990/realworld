@@ -5,6 +5,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
 import java.util.Optional;
 
 @RequiredArgsConstructor
@@ -27,7 +28,8 @@ public class UserService {
 
     @Transactional(readOnly = true)
     public User getUserById(Long userId) {
-        return userRepository.findUserByUserId(userId).orElseThrow(UserNotFoundException::new);
+        return userRepository.findUserByUserId(userId)
+                .orElseThrow(UserNotFoundException::new);
     }
 
     @Transactional(readOnly = true)
@@ -59,6 +61,7 @@ public class UserService {
     public Optional<User> findUserByUsername(String username) {
         return userRepository.findUserByUsername(username);
     }
+
     public User getUserByUsername(String username) {
         return userRepository.findUserByUsername(username)
                 .orElseThrow(UserNotFoundException::new);

@@ -1,11 +1,13 @@
-package com.realworldbackend.application.api.profile;
+package com.realworldbackend.application.api.user;
 
 import com.realworldbackend.application.security.UserPayload;
 import lombok.RequiredArgsConstructor;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
+
+import static org.springframework.http.HttpStatus.OK;
+import static org.springframework.http.ResponseEntity.status;
 
 @RestController
 @RequestMapping("/api/profiles")
@@ -19,7 +21,7 @@ public class ProfileApi {
             @AuthenticationPrincipal UserPayload payload,
             @PathVariable String username
     ) {
-        return ResponseEntity.status(HttpStatus.OK)
+        return status(OK)
                 .body(totalProfileService.find(username, payload.getUserId()));
     }
 
@@ -28,7 +30,7 @@ public class ProfileApi {
             @AuthenticationPrincipal UserPayload payload,
             @PathVariable String username
     ) {
-        return ResponseEntity.status(HttpStatus.OK).body(
+        return status(OK).body(
                 totalProfileService.follow(username, payload.getUserId())
         );
     }
@@ -38,7 +40,7 @@ public class ProfileApi {
             @AuthenticationPrincipal UserPayload payload,
             @PathVariable String username
     ) {
-        return ResponseEntity.status(HttpStatus.OK).body(
+        return status(OK).body(
                 totalProfileService.unFollow(username, payload.getUserId())
         );
     }

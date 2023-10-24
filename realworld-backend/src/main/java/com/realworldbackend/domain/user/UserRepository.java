@@ -3,6 +3,7 @@ package com.realworldbackend.domain.user;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 
+import java.util.List;
 import java.util.Optional;
 
 public interface UserRepository extends JpaRepository<User, Long> {
@@ -21,4 +22,7 @@ public interface UserRepository extends JpaRepository<User, Long> {
 
     @Query("select u from User u where u.avatar.username = ?1")
     Optional<User> findUserByUsername(String username);
+
+    @Query("select u,f from User u join u.followers f where u = ?1")
+    List<User> findIFollowed(User user);
 }

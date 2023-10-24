@@ -1,6 +1,6 @@
 package com.realworldbackend.application.api.articles;
 
-import com.realworldbackend.application.api.profile.ProfileResponse;
+import com.realworldbackend.application.api.user.ProfileResponse;
 import com.realworldbackend.domain.article.Article;
 import lombok.*;
 
@@ -8,7 +8,6 @@ import java.time.ZoneId;
 import java.time.ZonedDateTime;
 import java.util.List;
 import java.util.Set;
-import java.util.stream.Collectors;
 
 @Getter
 @AllArgsConstructor

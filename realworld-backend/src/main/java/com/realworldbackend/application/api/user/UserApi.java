@@ -1,32 +1,35 @@
-package com.realworldbackend.application.api.profile;
+package com.realworldbackend.application.api.user;
 
 import com.realworldbackend.application.security.UserPayload;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
+import static org.springframework.http.ResponseEntity.status;
+
 @RestController
 @RequestMapping("/api/user")
 @RequiredArgsConstructor
+@Slf4j
 public class UserApi {
 
     private final TotalUserService totalUserService;
 
     @GetMapping
     ResponseEntity<UserResponse> currentUser(@AuthenticationPrincipal UserPayload payload) {
-        return ResponseEntity.status(HttpStatus.OK)
+        return status(HttpStatus.OK)
                 .body(totalUserService.me(payload));
     }
-
 
     @PutMapping
     ResponseEntity<UserResponse> updateUser(
             @AuthenticationPrincipal UserPayload payload,
             @RequestBody UpdateProfileRequest request
     ) {
-        return ResponseEntity.status(HttpStatus.OK).body(
+        return status(HttpStatus.OK).body(
                 totalUserService.update(payload,
                         request.getEmail(),
                         request.getUsername(),

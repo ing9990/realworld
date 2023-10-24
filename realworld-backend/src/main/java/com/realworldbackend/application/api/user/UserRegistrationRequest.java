@@ -1,20 +1,26 @@
-package com.realworldbackend.application.api.profile;
+package com.realworldbackend.application.api.user;
 
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import jakarta.validation.constraints.NotEmpty;
+
+import lombok.*;
 
 import static com.fasterxml.jackson.annotation.JsonTypeInfo.As.WRAPPER_OBJECT;
 import static com.fasterxml.jackson.annotation.JsonTypeInfo.Id.NAME;
 
-@Data
+@Getter
 @AllArgsConstructor
 @NoArgsConstructor
 @JsonTypeName("user")
 @JsonTypeInfo(include = WRAPPER_OBJECT, use = NAME)
-public class UserLoginRequest {
+class UserRegistrationRequest {
+    @NotEmpty
     private String email;
+
+    @NotEmpty
     private String password;
+
+    @NotEmpty
+    private String username;
 }

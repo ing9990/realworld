@@ -1,4 +1,4 @@
-package com.realworldbackend.application.api.profile;
+package com.realworldbackend.application.api.user;
 
 import com.realworldbackend.application.exception.BusinessException;
 import com.realworldbackend.application.exception.ErrorCode;

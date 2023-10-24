@@ -35,7 +35,9 @@ public class SpringFilterChainConfig {
                         .requestMatchers(GET, "/api/articles/**").permitAll()
                         .requestMatchers(GET, "/api/profiles/**").permitAll()
                         .requestMatchers(GET, "/api/tags/**").permitAll()
-                        .anyRequest().authenticated())
+                        .anyRequest()
+                        .authenticated()
+                )
                 .addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class)
                 .build();
     }
