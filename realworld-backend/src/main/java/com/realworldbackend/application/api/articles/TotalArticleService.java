@@ -63,3 +63,4 @@ class TotalArticleService {
         return SingleArticleResponse.fromArticle(article);
     }
 }
+
