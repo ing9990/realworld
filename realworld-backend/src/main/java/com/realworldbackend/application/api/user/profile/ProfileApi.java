@@ -1,4 +1,4 @@
-package com.realworldbackend.application.api.user;
+package com.realworldbackend.application.api.user.profile;
 
 import com.realworldbackend.application.security.UserPayload;
 import lombok.RequiredArgsConstructor;

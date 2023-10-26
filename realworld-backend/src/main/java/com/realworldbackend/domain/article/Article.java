@@ -163,4 +163,13 @@ public class Article {
     private void changeTitle(String newTitle) {
         this.title = newTitle;
     }
+
+    public Article addFavorite(User user) {
+        userFavorited.add(user);
+        return this;
+    }
+
+    public void removeFavoritedUser(User viewer) {
+        userFavorited.remove(viewer);
+    }
 }

@@ -12,5 +12,6 @@ public class UserPayload {
     }
 
     protected UserPayload() {
+
     }
 }

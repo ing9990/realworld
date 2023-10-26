@@ -1,4 +1,4 @@
-package com.realworldbackend.application.api.user;
+package com.realworldbackend.application.api.user.profile;
 
 import com.realworldbackend.application.exception.ErrorCode;
 import com.realworldbackend.domain.user.User;

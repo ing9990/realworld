@@ -1,6 +1,6 @@
 package com.realworldbackend.application.api.articles;
 
-import com.realworldbackend.application.api.user.ProfileResponse;
+import com.realworldbackend.application.api.user.profile.ProfileResponse;
 import com.realworldbackend.domain.article.Article;
 import lombok.*;
 

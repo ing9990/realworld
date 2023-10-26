@@ -1,4 +1,4 @@
-package com.realworldbackend.application.api.user;
+package com.realworldbackend.application.api.user.profile;
 
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;

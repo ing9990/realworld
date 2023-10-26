@@ -14,28 +14,17 @@ import static org.springframework.http.ResponseEntity.status;
 @RequestMapping("/api/user")
 @RequiredArgsConstructor
 @Slf4j
-public class UserApi {
+class UserApi {
 
     private final TotalUserService totalUserService;
 
     @GetMapping
     ResponseEntity<UserResponse> currentUser(@AuthenticationPrincipal UserPayload payload) {
-        return status(HttpStatus.OK)
-                .body(totalUserService.me(payload));
+        return status(HttpStatus.OK).body(totalUserService.me(payload));
     }
 
     @PutMapping
-    ResponseEntity<UserResponse> updateUser(
-            @AuthenticationPrincipal UserPayload payload,
-            @RequestBody UpdateProfileRequest request
-    ) {
-        return status(HttpStatus.OK).body(
-                totalUserService.update(payload,
-                        request.getEmail(),
-                        request.getUsername(),
-                        request.getPassword(),
-                        request.getBio(),
-                        request.getImage()
-                ));
+    ResponseEntity<UserResponse> updateUser(@AuthenticationPrincipal UserPayload payload, @RequestBody UpdateProfileRequest request) {
+        return status(HttpStatus.OK).body(totalUserService.update(payload, request.getEmail(), request.getUsername(), request.getPassword(), request.getBio(), request.getImage()));
     }
 }

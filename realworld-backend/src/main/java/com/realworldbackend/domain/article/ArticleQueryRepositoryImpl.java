@@ -25,7 +25,10 @@ public class ArticleQueryRepositoryImpl implements ArticleQueryRepository {
                 .leftJoin(article.tags, QTag.tag)
                 .leftJoin(article.author, new QUser("user_author"))
                 .leftJoin(article.userFavorited, QUser.user)
-                .where(eqTagName(tagName), eqFavoritesName(favoritesName), eqAuthorName(authorName))
+                .where(
+                        eqTagName(tagName),
+                        eqFavoritesName(favoritesName),
+                        eqAuthorName(authorName))
                 .offset(offset)
                 .limit(limit)
                 .fetch();

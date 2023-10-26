@@ -10,9 +10,9 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
+import static java.util.Optional.*;
 import static org.springframework.http.HttpStatus.OK;
 import static org.springframework.http.ResponseEntity.status;
-
 
 @RequestMapping("/api/articles")
 @RequiredArgsConstructor
@@ -46,15 +46,18 @@ public class ArticlesApi {
 
     @GetMapping
     ResponseEntity<MultipleArticleResponse> findArticles(
+            @AuthenticationPrincipal UserPayload userPayload,
             @RequestParam(required = false) String author,
             @RequestParam(required = false) String favorited,
             @RequestParam(required = false) String tag,
             @RequestParam(required = false, defaultValue = "10") int limit,
             @RequestParam(required = false, defaultValue = "0") int offset
     ) {
-        return status(OK).body(totalArticleService.findAll(
-                author, favorited, tag, limit, offset
-        ));
+        return status(OK).body(
+                of(userPayload)
+                        .map(payload -> totalArticleService.findByCondition(payload, author, favorited, tag, limit, offset))
+                        .orElseGet(() -> totalArticleService.findByCondition(author, favorited, tag, limit, offset))
+        );
     }
 
     @GetMapping("/feed")
@@ -66,9 +69,25 @@ public class ArticlesApi {
     }
 
     @GetMapping("/{slug}")
-    public ResponseEntity<SingleArticleResponse> getArticleBySlug(
+    public ResponseEntity<SingleArticleResponse> getArticle(
             @PathVariable String slug
     ) {
         return status(OK).body(totalArticleService.findBySlug(slug));
+    }
+
+    @PostMapping("/{slug}/favorite")
+    public ResponseEntity<SingleArticleResponse> favortie(
+            @AuthenticationPrincipal UserPayload userPayload,
+            @PathVariable String slug
+    ) {
+        return status(OK).body(totalArticleService.favorite(slug, userPayload));
+    }
+
+    @DeleteMapping("/{slug}/favorite")
+    public ResponseEntity<SingleArticleResponse> unFavortie(
+            @AuthenticationPrincipal UserPayload userPayload,
+            @PathVariable String slug
+    ) {
+        return status(OK).body(totalArticleService.unfavorite(slug, userPayload));
     }
 }

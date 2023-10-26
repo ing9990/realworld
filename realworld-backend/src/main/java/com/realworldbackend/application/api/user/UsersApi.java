@@ -20,13 +20,11 @@ public class UsersApi {
 
     @PostMapping
     ResponseEntity<UserResponse> registration(@Valid @RequestBody UserRegistrationRequest userRegistrationRequest) {
-        final UserResponse user = totalUserService.registration(userRegistrationRequest.getEmail(), userRegistrationRequest.getUsername(), userRegistrationRequest.getPassword());
-        return status(CREATED).body(user);
+        return status(CREATED).body(totalUserService.registration(userRegistrationRequest.getEmail(), userRegistrationRequest.getUsername(), userRegistrationRequest.getPassword()));
     }
 
     @PostMapping("/login")
     ResponseEntity<UserResponse> login(@Valid @RequestBody UserLoginRequest userLoginRequest) {
-        final UserResponse user = totalUserService.login(userLoginRequest.getEmail(), userLoginRequest.getPassword());
-        return status(CREATED).body(user);
+        return status(CREATED).body(totalUserService.login(userLoginRequest.getEmail(), userLoginRequest.getPassword()));
     }
 }

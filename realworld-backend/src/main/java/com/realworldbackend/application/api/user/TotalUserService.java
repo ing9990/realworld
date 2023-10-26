@@ -15,7 +15,7 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.Optional;
 
 @Service
-@Transactional
+@Transactional(readOnly = true)
 @RequiredArgsConstructor
 class TotalUserService {
 
@@ -23,6 +23,7 @@ class TotalUserService {
     private final UserService userService;
     private final JwtService jwtService;
 
+    @Transactional
     public UserResponse registration(
             final String email,
             final String username,
@@ -37,6 +38,7 @@ class TotalUserService {
         return UserResponse.from(user, tokens.getAccessToken());
     }
 
+    @Transactional
     public UserResponse login(String email, String password) {
         final User user = userService.findUserByEmail(email)
                 .filter(foundUser -> encoder.matches(password, foundUser.getPassword()))
@@ -44,6 +46,7 @@ class TotalUserService {
         return UserResponse.from(user, jwtService.makeAndGetToken(user.getId()).getAccessToken());
     }
 
+    @Transactional
     public UserResponse update(UserPayload payload, Optional<String> email, Optional<String> username, Optional<String> password, Optional<String> bio, Optional<String> image) {
         return UserResponse.from(userService.getUserById(payload.getUserId()).update(email, username, password, bio, image));
     }

@@ -3,7 +3,7 @@ package com.realworldbackend.application.api.articles;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
-import com.realworldbackend.application.api.user.ProfileResponse;
+import com.realworldbackend.application.api.user.profile.ProfileResponse;
 import com.realworldbackend.domain.article.Article;
 import lombok.AllArgsConstructor;
 import lombok.Builder;

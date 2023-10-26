@@ -41,9 +41,7 @@ public class User {
     private Avatar avatar = new Avatar();
 
 
-    @JoinTable(name = "user_follow",
-            joinColumns = @JoinColumn(name = "user_id", referencedColumnName = "user_id"),
-            inverseJoinColumns = @JoinColumn(name = "followee_id", referencedColumnName = "user_id"))
+    @JoinTable(name = "user_follow", joinColumns = @JoinColumn(name = "user_id", referencedColumnName = "user_id"), inverseJoinColumns = @JoinColumn(name = "followee_id", referencedColumnName = "user_id"))
     @OneToMany(cascade = REMOVE)
     private Set<User> followers = new HashSet<>();
 
@@ -108,17 +106,21 @@ public class User {
         this.email = email;
     }
 
-    protected User followTargetUser(
-            final User followee
-    ) {
+    protected User followTargetUser(final User followee) {
         followers.add(followee);
         return this;
     }
 
-    protected User unFollowTargetUser(
-            final User followee
-    ) {
+    protected User unFollowTargetUser(final User followee) {
         followers.remove(followee);
         return this;
+    }
+
+    public void addFavoritedArticle(final Article article) {
+        articleFavorited.add(article);
+    }
+
+    public void removeFavoritedAritcle(final Article article) {
+        articleFavorited.remove(article);
     }
 }
