@@ -17,8 +17,16 @@ public interface ArticleRepository extends ArticleJpaRepository, ArticleQueryRep
     List<Article> findArticlesByAuthorIsIn(Collection<User> user, Pageable pageable);
 
     @Query("select a from Article a where a.slug = ?1")
-    Article findArticleBySlug(String slug);
+    Article getArticleBySlug(String slug);
+
+
+    @Query("select a from Article a where a.slug = ?1")
+    Optional<Article> findArticleBySlug(String slug);
+
 
     @Query("select a from Article a where a.slug = ?1 and a.author.id = ?2")
     Optional<Article> findArticleBySlugAndAuthorId(String slug, Long userId);
+
+    @Query("select (count(a) > 0) from Article a where a.slug = ?1")
+    boolean existsBySlug(String slug);
 }

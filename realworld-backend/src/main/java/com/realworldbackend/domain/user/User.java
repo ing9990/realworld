@@ -1,5 +1,6 @@
 package com.realworldbackend.domain.user;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.realworldbackend.domain.article.Article;
 import com.realworldbackend.application.exception.ErrorCode;
 import jakarta.persistence.*;

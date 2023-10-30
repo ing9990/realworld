@@ -1,6 +1,7 @@
 package com.realworldbackend.application.exception;
 
 import com.realworldbackend.domain.auth.AuthException;
+import io.jsonwebtoken.JwtException;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;

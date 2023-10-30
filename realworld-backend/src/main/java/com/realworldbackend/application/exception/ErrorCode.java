@@ -21,7 +21,8 @@ public enum ErrorCode {
 
     NOT_SUPPORTED_OAUTH_SERVICE(401, "O001", "OAuth services isn't supported"),
 
-    ARTICLE_NOT_FOUND(404, "ANF001", "Article not found."), HOW_ARE_YOU(401, "UNE002", ""), LOGIN_FAIL(401, "LE001", "Login failed");
+    ARTICLE_NOT_FOUND(404, "ANF001", "Article not found."), HOW_ARE_YOU(401, "UNE002", ""), LOGIN_FAIL(401, "LE001", "Login failed"),
+    DUPLICATED_SLUG(400, "DS001", "Duplicated slug.");
 
     private int status;
     private final String code;

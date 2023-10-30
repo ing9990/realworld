@@ -1,5 +1,6 @@
 package com.realworldbackend.domain.article;
 
+import com.realworldbackend.domain.article.comment.Comment;
 import com.realworldbackend.domain.article.tag.Tag;
 import com.realworldbackend.domain.user.User;
 import jakarta.persistence.*;
@@ -14,6 +15,7 @@ import java.time.Instant;
 import java.util.*;
 import java.util.stream.Collectors;
 
+import static jakarta.persistence.CascadeType.ALL;
 import static jakarta.persistence.CascadeType.PERSIST;
 import static jakarta.persistence.FetchType.LAZY;
 
@@ -55,6 +57,10 @@ public class Article {
             inverseJoinColumns = @JoinColumn(name = "user_id", referencedColumnName = "user_id", nullable = false))
     @ManyToMany(fetch = LAZY, cascade = PERSIST)
     private Set<User> userFavorited = new HashSet<>();
+
+    @OneToMany
+    @JoinColumn(name = "article_id")
+    private Set<Comment> comments = new HashSet<>();
 
     @CreatedDate
     @Column(name = "created_at", updatable = false, nullable = false)
@@ -133,7 +139,7 @@ public class Article {
         return slugBuilder.substring(0, slugBuilder.length() - 1);
     }
 
-    public Article addTags(Set<Tag> tags) {
+    public Article addTags(final Set<Tag> tags) {
         this.tags.addAll(tags);
         return this;
     }
@@ -144,7 +150,7 @@ public class Article {
                 .collect(Collectors.toSet());
     }
 
-    public Article update(Optional<String> title, Optional<String> body, Optional<String> description) {
+    public Article update(final Optional<String> title, final Optional<String> body, final Optional<String> description) {
         title.ifPresent(this::changeTitle);
         body.ifPresent(this::changeBody);
         description.ifPresent(this::changeDescription);
@@ -152,24 +158,32 @@ public class Article {
         return this;
     }
 
-    private void changeDescription(String newDescription) {
+    private void changeDescription(final String newDescription) {
         this.description = newDescription;
     }
 
-    private void changeBody(String newBody) {
+    private void changeBody(final String newBody) {
         this.body = newBody;
     }
 
-    private void changeTitle(String newTitle) {
+    private void changeTitle(final String newTitle) {
         this.title = newTitle;
     }
 
-    public Article addFavorite(User user) {
+    public Article addFavorite(final User user) {
         userFavorited.add(user);
         return this;
     }
 
-    public void removeFavoritedUser(User viewer) {
+    public void removeFavoritedUser(final User viewer) {
         userFavorited.remove(viewer);
+    }
+
+    public void addComment(Comment comment) {
+        comments.add(comment);
+    }
+
+    public void removeComment(Comment comment) {
+        comments.remove(comment);
     }
 }

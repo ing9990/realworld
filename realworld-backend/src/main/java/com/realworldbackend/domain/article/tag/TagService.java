@@ -1,9 +1,11 @@
 package com.realworldbackend.domain.article.tag;
 
+import com.realworldbackend.application.api.articles.tag.TagResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.Collection;
 import java.util.Set;
 import java.util.stream.Collectors;
 
@@ -28,5 +30,9 @@ public class TagService {
         tagRepository.saveAll(newTags);
         existingTags.addAll(newTags);
         return existingTags;
+    }
+
+    public Collection<Tag> findAll() {
+        return tagRepository.findAll();
     }
 }

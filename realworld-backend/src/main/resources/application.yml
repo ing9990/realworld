@@ -2,15 +2,13 @@ server:
   port: 8080
 
 spring:
+  config:
+    import: classpath:secret.yml
+
   security:
     user:
       password: password
       name: username
-
-  datasource:
-    url: jdbc:mysql://localhost:3306/realworlddb
-    username: root
-    password:
 
   jpa:
     hibernate:
@@ -21,11 +19,6 @@ spring:
     properties:
       hibernate:
         default_batch_fetch_size: 1000
-security:
-  jwt:
-    secret-key: UmVhbHdvcmxkLUFwcGxpY2F0aW9uLVNwcmluZ2Jvb3Q=
-    access-expiration-time: 3_600_000
-    refresh-expiration-time: 2_592_000_000
 
 logging:
   level:

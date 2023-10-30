@@ -27,26 +27,32 @@ class TotalArticleService {
 
     @Transactional
     public SingleArticleResponse createArticle(final String title, final String description, final String body, final Set<String> tagList, final Long userId) {
-        return userService.findUserById(userId).map(author -> articleService.save(title, description, body, author)).map(article -> article.addTags(tagService.saveIfNotExists(tagList))).map(SingleArticleResponse::fromArticle).orElseThrow(UserNotFoundException::new);
+        return userService.findUserById(userId)
+                .map(author -> articleService.save(title, description, body, author))
+                .map(article -> article.addTags(tagService.saveIfNotExists(tagList)))
+                .map(SingleArticleResponse::fromArticle)
+                .orElseThrow(UserNotFoundException::new);
     }
 
     @Transactional
     public SingleArticleResponse updateArticles(String slug, UserPayload userPayload, Optional<String> title, Optional<String> body, Optional<String> description) {
-        Article article = articleService.findArticleBySlugAndUserId(slug, userPayload.getUserId()).update(title, body, description);
+        articleService.checkSlugDuplicated(slug);
+        Article article = articleService.findArticleBySlugAndUserId(slug, userPayload.getUserId())
+                .update(title, body, description);
         return SingleArticleResponse.fromArticle(article);
     }
 
     @Transactional
     public SingleArticleResponse favorite(String slug, UserPayload userPayload) {
         User viewer = userService.getUserById(userPayload.getUserId());
-        Article article = articleService.findArticleBySlug(slug).addFavorite(viewer);
+        Article article = articleService.getArticleBySlug(slug).addFavorite(viewer);
         viewer.addFavoritedArticle(article.withFavorited(viewer));
         return SingleArticleResponse.fromArticle(article);
     }
 
     @Transactional
     public SingleArticleResponse unfavorite(String slug, UserPayload userPayload) {
-        Article article = articleService.findArticleBySlug(slug);
+        Article article = articleService.getArticleBySlug(slug);
         articleService.removeFavorite(article, userService.getUserById(userPayload.getUserId()));
         return SingleArticleResponse.fromArticle(article);
     }
@@ -63,7 +69,7 @@ class TotalArticleService {
     }
 
     public SingleArticleResponse findBySlug(String slug) {
-        return SingleArticleResponse.fromArticle(articleService.findArticleBySlug(slug));
+        return SingleArticleResponse.fromArticle(articleService.getArticleBySlug(slug));
     }
 
     public MultipleArticleResponse findByCondition(UserPayload payload, String author, String favorited, String tag, int limit, int offset) {

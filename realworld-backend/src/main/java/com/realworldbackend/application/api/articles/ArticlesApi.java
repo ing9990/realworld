@@ -54,7 +54,7 @@ public class ArticlesApi {
             @RequestParam(required = false, defaultValue = "0") int offset
     ) {
         return status(OK).body(
-                of(userPayload)
+                ofNullable(userPayload)
                         .map(payload -> totalArticleService.findByCondition(payload, author, favorited, tag, limit, offset))
                         .orElseGet(() -> totalArticleService.findByCondition(author, favorited, tag, limit, offset))
         );
