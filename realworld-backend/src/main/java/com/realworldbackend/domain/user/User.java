@@ -65,7 +65,7 @@ public class User {
 
     }
 
-    public User(final String username, final String email, final String password) {
+    private User(final String username, final String email, final String password) {
         checkEmailFormat(email);
 
         this.email = email;
