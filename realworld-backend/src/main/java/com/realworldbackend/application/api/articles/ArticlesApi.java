@@ -61,7 +61,7 @@ public class ArticlesApi {
     }
 
     @GetMapping("/feed")
-    public ResponseEntity<MultipleArticleResponse> getFeed(
+    ResponseEntity<MultipleArticleResponse> getFeed(
             @AuthenticationPrincipal UserPayload userPayload,
             @PageableDefault(size = 10) Pageable pageable
     ) {
@@ -69,14 +69,14 @@ public class ArticlesApi {
     }
 
     @GetMapping("/{slug}")
-    public ResponseEntity<SingleArticleResponse> getArticle(
+    ResponseEntity<SingleArticleResponse> getArticle(
             @PathVariable String slug
     ) {
         return status(OK).body(totalArticleService.findBySlug(slug));
     }
 
     @PostMapping("/{slug}/favorite")
-    public ResponseEntity<SingleArticleResponse> favortie(
+    ResponseEntity<SingleArticleResponse> favortie(
             @AuthenticationPrincipal UserPayload userPayload,
             @PathVariable String slug
     ) {
@@ -84,7 +84,7 @@ public class ArticlesApi {
     }
 
     @DeleteMapping("/{slug}/favorite")
-    public ResponseEntity<SingleArticleResponse> unFavortie(
+    ResponseEntity<SingleArticleResponse> unFavortie(
             @AuthenticationPrincipal UserPayload userPayload,
             @PathVariable String slug
     ) {

@@ -22,7 +22,4 @@ public interface UserRepository extends JpaRepository<User, Long> {
 
     @Query("select u from User u where u.avatar.username = ?1")
     Optional<User> findUserByUsername(String username);
-
-    @Query("select u,f from User u join u.followers f where u = ?1")
-    List<User> findIFollowed(User user);
 }

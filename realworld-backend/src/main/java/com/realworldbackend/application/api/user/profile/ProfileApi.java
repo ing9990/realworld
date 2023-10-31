@@ -12,12 +12,12 @@ import static org.springframework.http.ResponseEntity.status;
 @RestController
 @RequestMapping("/api/profiles")
 @RequiredArgsConstructor
-public class ProfileApi {
+class ProfileApi {
 
     private final TotalProfileService totalProfileService;
 
     @GetMapping("/{username}")
-    public ResponseEntity<ProfileResponse> findProfile(
+    ResponseEntity<ProfileResponse> findProfile(
             @AuthenticationPrincipal UserPayload payload,
             @PathVariable String username
     ) {
@@ -26,7 +26,7 @@ public class ProfileApi {
     }
 
     @PostMapping("/{username}/follow")
-    public ResponseEntity<ProfileResponse> follow(
+    ResponseEntity<ProfileResponse> follow(
             @AuthenticationPrincipal UserPayload payload,
             @PathVariable String username
     ) {
@@ -36,7 +36,7 @@ public class ProfileApi {
     }
 
     @DeleteMapping("/{username}/follow")
-    public ResponseEntity<ProfileResponse> unfollow(
+    ResponseEntity<ProfileResponse> unfollow(
             @AuthenticationPrincipal UserPayload payload,
             @PathVariable String username
     ) {

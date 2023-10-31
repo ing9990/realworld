@@ -5,10 +5,12 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
+import org.springframework.security.config.annotation.web.configuration.WebSecurityCustomizer;
 import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 
 import static org.springframework.http.HttpMethod.GET;
 import static org.springframework.http.HttpMethod.POST;
@@ -21,6 +23,13 @@ public class SpringFilterChainConfig {
 
     private final JwtAuthenticationFilter jwtAuthenticationFilter;
 
+
+    @Bean
+    public WebSecurityCustomizer webSecurityCustomizer() {
+        return web -> web.ignoring().
+                requestMatchers(new AntPathRequestMatcher("/h2-console/**"));
+    }
+
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         return http
@@ -31,10 +40,11 @@ public class SpringFilterChainConfig {
                 .sessionManagement(httpSecuritySessionManagementConfigurer ->
                         httpSecuritySessionManagementConfigurer.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .authorizeHttpRequests(request -> request
-                        .requestMatchers(POST, "/api/users", "/api/users/login").permitAll()
-                        .requestMatchers(GET, "/api/articles/**").permitAll()
-                        .requestMatchers(GET, "/api/profiles/**").permitAll()
-                        .requestMatchers(GET, "/api/tags/**").permitAll()
+                        .requestMatchers(new AntPathRequestMatcher("/api/users")).permitAll()
+                        .requestMatchers(new AntPathRequestMatcher("/api/users/login")).permitAll()
+                        .requestMatchers(new AntPathRequestMatcher("/api/articles/**")).permitAll()
+                        .requestMatchers(new AntPathRequestMatcher("/api/profiles/**")).permitAll()
+                        .requestMatchers(new AntPathRequestMatcher("/api/tags/**")).permitAll()
                         .anyRequest()
                         .authenticated()
                 )

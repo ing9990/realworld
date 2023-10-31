@@ -14,7 +14,7 @@ import static org.springframework.http.ResponseEntity.status;
 @RestController
 @RequestMapping("/api/articles/{slug}/comments")
 @RequiredArgsConstructor
-public class CommentApi {
+class CommentApi {
 
     private final TotalCommentService totalCommentService;
 

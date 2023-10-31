@@ -14,7 +14,7 @@ import static com.fasterxml.jackson.annotation.JsonTypeInfo.Id.NAME;
 @NoArgsConstructor
 @JsonTypeName("user")
 @JsonTypeInfo(include = WRAPPER_OBJECT, use = NAME)
-public class UserLoginRequest {
+class UserLoginRequest {
     private String email;
     private String password;
 }

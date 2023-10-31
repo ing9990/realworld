@@ -1,6 +1,5 @@
 package com.realworldbackend.domain.user;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.realworldbackend.domain.article.Article;
 import com.realworldbackend.application.exception.ErrorCode;
 import jakarta.persistence.*;
@@ -19,7 +18,7 @@ import java.util.regex.Pattern;
 import static jakarta.persistence.CascadeType.REMOVE;
 
 @Entity
-@Table(name = "user")
+@Table(name = "user_tb")
 @Where(clause = "user_status = 'ACTIVE'")
 @SQLDelete(sql = "UPDATE user SET user_status = 'DELETED' WHERE id = ?")
 @Getter
@@ -66,10 +65,9 @@ public class User {
 
     }
 
-    public User(Long id, final String username, final String email, final String password) {
+    public User(final String username, final String email, final String password) {
         checkEmailFormat(email);
 
-        this.id = id;
         this.email = email;
         this.password = password;
         this.userStatus = UserStatus.ACTIVE;
@@ -83,7 +81,7 @@ public class User {
     }
 
     public static User registration(final String username, final String email, final String encodedPassword) {
-        return new User(null, username, email, encodedPassword);
+        return new User(username, email, encodedPassword);
     }
 
     private void checkEmailFormat(final String email) {

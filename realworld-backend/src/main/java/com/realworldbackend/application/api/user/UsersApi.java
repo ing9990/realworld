@@ -14,7 +14,7 @@ import static org.springframework.http.ResponseEntity.status;
 @RestController
 @RequestMapping("/api/users")
 @RequiredArgsConstructor
-public class UsersApi {
+class UsersApi {
 
     private final TotalUserService totalUserService;
 

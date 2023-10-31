@@ -13,7 +13,7 @@ import static com.fasterxml.jackson.annotation.JsonTypeInfo.Id.NAME;
 @NoArgsConstructor
 @JsonTypeName("article")
 @JsonTypeInfo(include = WRAPPER_OBJECT, use = NAME)
-public class UpdateArticleRequest {
+class UpdateArticleRequest {
 
     private String title;
     private String description;
